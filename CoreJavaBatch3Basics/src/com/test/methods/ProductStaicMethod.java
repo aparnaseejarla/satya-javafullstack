@@ -1,0 +1,13 @@
+package com.test.methods;
+
+public class ProductStaicMethod {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

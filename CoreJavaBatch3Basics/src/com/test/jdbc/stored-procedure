@@ -1,0 +1,12 @@
+
+DELIMITER $$
+CREATE PROCEDURE GetStudentData()
+BEGIN
+    SELECT * FROM studentMarks;
+END$$
+DELIMITER ;
+
+-------------------------------------------------
+
+
+
