@@ -1,130 +1,143 @@
-
 <!DOCTYPE html>
 <html lang='en'>
+
 <head>
-<script>
-  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-PJQPGJF');
-</script>
-<meta content='width=device-width, initial-scale=1' name='viewport'>
-<title>Java dependency management: Using Maven and Gradle
-</title>
-<meta content='Java, dependency management, Maven, Gradle, tutorial, software development
+    <script>
+        (function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-PJQPGJF');
+    </script>
+    <meta content='width=device-width, initial-scale=1' name='viewport'>
+    <title>Java dependency management: Using Maven and Gradle
+    </title>
+    <meta content='Java, dependency management, Maven, Gradle, tutorial, software development
 ' name='keywords'>
-<meta content='Learn about Java dependency management using Maven and Gradle. This tutorial covers the basics, installation, project creation, and managing dependencies for both tools.
+    <meta content='Learn about Java dependency management using Maven and Gradle. This tutorial covers the basics, installation, project creation, and managing dependencies for both tools.
 ' name='description'>
-<meta name="twitter:site" content="@reintech_io"/>
+    <meta name="twitter:site" content="@reintech_io" />
 
-<meta content='no-cache' name='turbolinks-cache-control'>
-<script type='application/ld+json'>{"@context":"http://schema.org","@type":"SocialMediaPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://reintech.io/media"},"headline":"Java dependency management: Using Maven and Gradle","image":["https://reintech.io/assets/og_image-28d6d3fd2c13e47a47ff0b32b81655e5231efe2727393b35b29acf307a0e27c8.jpg"],"datePublished":"2023-04-18T08:30:40.994Z","dateModified":"2023-04-18T08:30:41.001Z","author":{"url":"/blog/author/arthur-c-codex","name":"Arthur C. Codex","@type":"Person"},"publisher":{"@type":"Organization","name":"Reintech"},"description":"Learn about Java dependency management using Maven and Gradle. This tutorial covers the basics, installation, project creation, and managing dependencies for both tools.","name":"Java dependency management: Using Maven and Gradle","url":"/blog/java-dependency-management-maven-gradle"}
+    <meta content='no-cache' name='turbolinks-cache-control'>
+    <script type='application/ld+json'>{"@context":"http://schema.org","@type":"SocialMediaPosting","mainEntityOfPage":{"@type":"WebPage","@id":""},"headline":"Java dependency management: Using Maven and Gradle","image":["https:///assets/og_image-28d6d3fd2c13e47a47ff0b32b81655e5231efe2727393b35b29acf307a0e27c8.jpg"],"datePublished":"2023-04-18T08:30:40.994Z","dateModified":"2023-04-18T08:30:41.001Z","author":{"url":"/blog/author/arthur-c-codex","name":"Arthur C. Codex","@type":"Person"},"publisher":{"@type":"Organization","name":"Reintech"},"description":"Learn about Java dependency management using Maven and Gradle. This tutorial covers the basics, installation, project creation, and managing dependencies for both tools.","name":"Java dependency management: Using Maven and Gradle","url":"/blog/java-dependency-management-maven-gradle"}
 </script>
-<link href='https://reintech.io/assets/home_page/_src/icons/yellow_mini_logo-3f999b5e8c490b4112514a05955f538da06eab6279ba8e8e51dd1a7b324c6a38.svg' rel='icon' type='image/svg+xml'>
-<meta content='https://reintech.io/blog/java-dependency-management-maven-gradle' property='og:url'>
-<meta content='website' property='og:type'>
-<meta content='Java dependency management: Using Maven and Gradle | Reintech media
+    <meta content='website' property='og:type'>
+    <meta content='Java dependency management: Using Maven and Gradle | Reintech media
 ' property='og:title'>
-<meta content='Learn about Java dependency management using Maven and Gradle. This tutorial covers the basics, installation, project creation, and managing dependencies for both tools.
+    <meta content='Learn about Java dependency management using Maven and Gradle. This tutorial covers the basics, installation, project creation, and managing dependencies for both tools.
 ' property='og:description'>
-<meta content='https://reintech.io/assets/og_image-28d6d3fd2c13e47a47ff0b32b81655e5231efe2727393b35b29acf307a0e27c8.jpg' property='og:image'>
-<meta content='198317151088375' property='fb:app_id'>
+    <meta content='198317151088375' property='fb:app_id'>
 
-<link rel="stylesheet" media="all" href="https://reintech.io/assets/media-f4de35379f61186900ed84451c4d5fa122986fea38001b634702f67568dcf70c.css" data-turbolinks-track="reload" />
-<script src="https://reintech.io/assets/media-bf0e9b47708db9f612c211884feb423a1aec501efd9ae0a8bfcdc9d59c45db87.js" data-turbolinks-track="reload"></script>
-<script src="https://reintech.io/packs/media-2a5466df818b6179cb51.js"></script>
-<meta name="csrf-param" content="authenticity_token" />
-<meta name="csrf-token" content="aIomIuu3d9TWAghsruh74sIZa3Vdt4/PEr2ND29wmsQ/jlgqXTqYgTrcW299CjQCHg4q/qwxhOvqZxSQTvLspg==" />
-<link rel="stylesheet" href="/prism.css">
-<script src="/prism.js"></script>
+    <meta name="csrf-param" content="authenticity_token" />
+    <meta name="csrf-token"
+        content="aIomIuu3d9TWAghsruh74sIZa3Vdt4/PEr2ND29wmsQ/jlgqXTqYgTrcW299CjQCHg4q/qwxhOvqZxSQTvLspg==" />
+    <link rel="stylesheet" href="/prism.css">
+    <script src="/prism.js"></script>
 
-<meta content='article' property='og:type'>
-<meta content='Java dependency management: Using Maven and Gradle' property='og:title'>
-<meta content='Java dependency management is crucial for software developers working on complex applications. This tutorial covers the basics of using Maven and Gradle, including installation, project creation, and dependency management. Both tools are essential for managing dependencies, automating the build process, and ensuring a smooth development experience. By understanding the differences between Maven and Gradle, you can choose the best tool for your project and improve your development workflow, especially when looking to hire remote Java developers or build a dedicated Java development team.' property='og:description'>
-<meta content='2023-04-18 08:30:40 UTC' property='article:published_time'>
-<meta content='2023-04-18 08:30:41 UTC' property='article:modified_time'>
-<meta content='Arthur C. Codex' name='author'>
+    <meta content='article' property='og:type'>
+    <meta content='Java dependency management: Using Maven and Gradle' property='og:title'>
+    <meta
+        content='Java dependency management is crucial for software developers working on complex applications. This tutorial covers the basics of using Maven and Gradle, including installation, project creation, and dependency management. Both tools are essential for managing dependencies, automating the build process, and ensuring a smooth development experience. By understanding the differences between Maven and Gradle, you can choose the best tool for your project and improve your development workflow, especially when looking to hire remote Java developers or build a dedicated Java development team.'
+        property='og:description'>
+    <meta content='2023-04-18 08:30:40 UTC' property='article:published_time'>
+    <meta content='2023-04-18 08:30:41 UTC' property='article:modified_time'>
+    <meta content='Arthur C. Codex' name='author'>
 
-<script type="application/ld+json">
+    <script type="application/ld+json">
   {
     "@context": "http://schema.org",
       "@type": "Organization",
         "name": "Reintech",
-          "url": "https://reintech.io"
+          "url": "https://"
             }
               </script>
-<meta name="facebook-domain-verification" content="rp0my1g2g2hu5b1tprxk2c9zgac983" />
-<link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:ital@0;1&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Raleway:ital@0;1&display=swap" rel="stylesheet">
+    <meta name="facebook-domain-verification" content="rp0my1g2g2hu5b1tprxk2c9zgac983" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital@0;1&display=swap" rel="stylesheet">
 
 
 </head>
+
 <body data-locale='en' data-turbolinks='false'>
-<header>
+    <header>
 
 
-</header>
-<main role='main'>
-<script src='https://www.google.com/recaptcha/api.js?render=6LexrLgcAAAAAOO1cCSveob78Y5_rsFhsGdEocaj'></script>
-<div class='show-media-page'>
-<div class='row main-content'>
-<div class='main-post col-lg-8'>
+    </header>
+    <main role='main'>
+        <script src='https://www.google.com/recaptcha/api.js?render=6LexrLgcAAAAAOO1cCSveob78Y5_rsFhsGdEocaj'></script>
+        <div class='show-media-page'>
+            <div class='row main-content'>
+                <div class='main-post col-lg-8'>
 
 
-<h1 class='mt-1 en'>Java dependency management: Using Maven and Gradle</h1>
-<div class='post-body'>
-<p>
-    Dependency management is a crucial aspect of software development, particularly when working with complex applications and multiple libraries. This tutorial aims to provide an in-depth understanding of Java dependency management using Maven and Gradle. These tools are essential for managing dependencies, automating the build process, and ensuring a smooth development experience. Furthermore, if you want to <a href="https://reintech.io/hire-java-developers">hire remote Java developers</a> or build a remote Java development team, understanding Maven and Gradle is essential.
-<p></p></p>
+                    <h1 class='mt-1 en'>Java dependency management: Using Maven and Gradle</h1>
+                    <div class='post-body'>
+                        <p>
+                            Dependency management is a crucial aspect of software development, particularly when working
+                            with complex applications and multiple libraries. This tutorial aims to provide an in-depth
+                            understanding of Java dependency management using Maven and Gradle. These tools are
+                            essential for managing dependencies, automating the build process, and ensuring a smooth
+                            development experience. Furthermore, if you want to hire-java-developers or build
+                            a remote Java development team, understanding Maven and Gradle is essential.
+                        <p></p>
+                        </p>
 
-<h2>Table of Contents</h2>
-<ol>
-    <li><a href="#maven_intro">Introduction to Maven</a></li>
-    <li><a href="#maven_install">Installing Maven</a></li>
-    <li><a href="#maven_create">Creating a Maven Project</a></li>
-    <li><a href="#maven_dependencies">Managing Dependencies in Maven</a></li>
-    <li><a href="#gradle_intro">Introduction to Gradle</a></li>
-    <li><a href="#gradle_install">Installing Gradle</a></li>
-    <li><a href="#gradle_create">Creating a Gradle Project</a></li>
-    <li><a href="#gradle_dependencies">Managing Dependencies in Gradle</a></li>
-    <li><a href="#comparison">Maven vs Gradle: A Comparison</a></li>
-    <li><a href="#conclusion">Conclusion</a></li>
-</ol>
+                        <h2>Table of Contents</h2>
+                        <ol>
+                            <li><a href="#maven_intro">Introduction to Maven</a></li>
+                            <li><a href="#maven_install">Installing Maven</a></li>
+                            <li><a href="#maven_create">Creating a Maven Project</a></li>
+                            <li><a href="#maven_dependencies">Managing Dependencies in Maven</a></li>
+                            <li><a href="#gradle_intro">Introduction to Gradle</a></li>
+                            <li><a href="#gradle_install">Installing Gradle</a></li>
+                            <li><a href="#gradle_create">Creating a Gradle Project</a></li>
+                            <li><a href="#gradle_dependencies">Managing Dependencies in Gradle</a></li>
+                            <li><a href="#comparison">Maven vs Gradle: A Comparison</a></li>
+                            <li><a href="#conclusion">Conclusion</a></li>
+                        </ol>
 
-<h2 id="maven_intro">1. Introduction to Maven</h2>
+                        <h2 id="maven_intro">1. Introduction to Maven</h2>
 
-<p>
-    Apache Maven is a popular open-source build automation and dependency management tool for Java projects. It simplifies project setup, build, and deployment by providing a standard project structure, a comprehensive project management system, and an extensible plugin mechanism.
-</p>
+                        <p>
+                            Apache Maven is a popular open-source build automation and dependency management tool for
+                            Java projects. It simplifies project setup, build, and deployment by providing a standard
+                            project structure, a comprehensive project management system, and an extensible plugin
+                            mechanism.
+                        </p>
 
-<h2 id="maven_install">2. Installing Maven</h2>
+                        <h2 id="maven_install">2. Installing Maven</h2>
 
-<p>
-    To install Maven, follow the steps below:
-</p>
-<ol>
-    <li>Download the latest version of Maven from the <a href="https://maven.apache.org/download.cgi">official website</a>.</li>
-    <li>Extract the downloaded archive to a directory of your choice.</li>
-    <li>Add the <code>bin</code> directory of the extracted folder to the <code>PATH</code> environment variable.</li>
-    <li>Verify the installation by running <code>mvn --version</code> in the command prompt or terminal. You should see the installed Maven version.</li>
-</ol>
+                        <p>
+                            To install Maven, follow the steps below:
+                        </p>
+                        <ol>
+                            <li>Download the latest version of Maven from the <a
+                                    href="https://maven.apache.org/download.cgi">official website</a>.</li>
+                            <li>Extract the downloaded archive to a directory of your choice.</li>
+                            <li>Add the <code>bin</code> directory of the extracted folder to the <code>PATH</code>
+                                environment variable.</li>
+                            <li>Verify the installation by running <code>mvn --version</code> in the command prompt or
+                                terminal. You should see the installed Maven version.</li>
+                        </ol>
 
-<h2 id="maven_create">3. Creating a Maven Project</h2>
+                        <h2 id="maven_create">3. Creating a Maven Project</h2>
 
-<p>
-    To create a new Maven project, run the following command in the terminal or command prompt:
-</p>
+                        <p>
+                            To create a new Maven project, run the following command in the terminal or command prompt:
+                        </p>
 
-<pre><code class="language-java">mvn archetype:generate -DgroupId=com.example -DartifactId=my-app -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+                        <pre><code class="language-java">mvn archetype:generate -DgroupId=com.example -DartifactId=my-app -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
 </code></pre>
 
-<p>
-    This command generates a simple Java project with the following structure:
-</p>
+                        <p>
+                            This command generates a simple Java project with the following structure:
+                        </p>
 
-<pre><code class="language-java">my-app
+                        <pre><code class="language-java">my-app
 |-- pom.xml
 `-- src
     |-- main
@@ -139,17 +152,20 @@
                     `-- AppTest.java
 </code></pre>
 
-<p>
-    The <code>pom.xml</code> file is the Project Object Model (POM) file, which defines the project's dependencies, build plugins, and other configurations.
-</p>
+                        <p>
+                            The <code>pom.xml</code> file is the Project Object Model (POM) file, which defines the
+                            project's dependencies, build plugins, and other configurations.
+                        </p>
 
-<h2 id="maven_dependencies">4. Managing Dependencies in Maven</h2>
+                        <h2 id="maven_dependencies">4. Managing Dependencies in Maven</h2>
 
-<p>
-    To add a dependency in Maven, you need to update the <code>pom.xml</code> file by adding the dependency details inside the <code>&lt;dependencies&gt;</code> tag. For example, to add the JUnit library, add the following code to your <code>pom.xml</code>:
-</p>
+                        <p>
+                            To add a dependency in Maven, you need to update the <code>pom.xml</code> file by adding the
+                            dependency details inside the <code>&lt;dependencies&gt;</code> tag. For example, to add the
+                            JUnit library, add the following code to your <code>pom.xml</code>:
+                        </p>
 
-<pre><code class="language-java">&lt;dependencies&gt;
+                        <pre><code class="language-java">&lt;dependencies&gt;
     &lt;dependency&gt;
         &lt;groupId&gt;junit&lt;/groupId&gt;
         &lt;artifactId&gt;junit&lt;/artifactId&gt;
@@ -159,42 +175,50 @@
 &lt;/dependencies&gt;
 </code></pre>
 
-<p>
-    Maven will automatically download the specified dependencies and their transitive dependencies from the Maven Central Repository or other configured repositories.
-</p>
+                        <p>
+                            Maven will automatically download the specified dependencies and their transitive
+                            dependencies from the Maven Central Repository or other configured repositories.
+                        </p>
 
-<h2 id="gradle_intro">5. Introduction to Gradle</h2>
+                        <h2 id="gradle_intro">5. Introduction to Gradle</h2>
 
-<p>
-    Gradle is a powerful and flexible open-source build automation and dependency management tool. Gradle uses a Groovy-based domain-specific language (DSL) to define project configurations, making it more expressive and easier to extend than XML-based tools like Maven. It also features incremental builds, which helps to speed up the build process by only recompiling the changed source files.
-</p>
+                        <p>
+                            Gradle is a powerful and flexible open-source build automation and dependency management
+                            tool. Gradle uses a Groovy-based domain-specific language (DSL) to define project
+                            configurations, making it more expressive and easier to extend than XML-based tools like
+                            Maven. It also features incremental builds, which helps to speed up the build process by
+                            only recompiling the changed source files.
+                        </p>
 
-<h2 id="gradle_install">6. Installing Gradle</h2>
+                        <h2 id="gradle_install">6. Installing Gradle</h2>
 
-<p>
-    To install Gradle, follow the steps below:
-</p>
-<ol>
-    <li>Download the latest version of Gradle from the <a href="https://gradle.org/releases/">official website</a>.</li>
-    <li>Extract the downloaded archive to a directory of your choice.</li>
-    <li>Add the <code>bin</code> directory of the extracted folder to the <code>PATH</code> environment variable.</li>
-    <li>Verify the installation by running <code>gradle --version</code> in the command prompt or terminal. You should see the installed Gradle version.</li>
-</ol>
+                        <p>
+                            To install Gradle, follow the steps below:
+                        </p>
+                        <ol>
+                            <li>Download the latest version of Gradle from the <a
+                                    href="https://gradle.org/releases/">official website</a>.</li>
+                            <li>Extract the downloaded archive to a directory of your choice.</li>
+                            <li>Add the <code>bin</code> directory of the extracted folder to the <code>PATH</code>
+                                environment variable.</li>
+                            <li>Verify the installation by running <code>gradle --version</code> in the command prompt
+                                or terminal. You should see the installed Gradle version.</li>
+                        </ol>
 
-<h2 id="gradle_create">7. Creating a Gradle Project</h2>
+                        <h2 id="gradle_create">7. Creating a Gradle Project</h2>
 
-<p>
-    To create a new Gradle project, run the following command in the terminal or command prompt:
-</p>
+                        <p>
+                            To create a new Gradle project, run the following command in the terminal or command prompt:
+                        </p>
 
-<pre><code class="language-java">gradle init --type java-application
+                        <pre><code class="language-java">gradle init --type java-application
 </code></pre>
 
-<p>
-    This command generates a simple Java project with the following structure:
-</p>
+                        <p>
+                            This command generates a simple Java project with the following structure:
+                        </p>
 
-<pre><code class="language-java">my-app
+                        <pre><code class="language-java">my-app
 |-- build.gradle
 |-- settings.gradle
 |-- gradlew
@@ -216,117 +240,97 @@
                     `-- AppTest.java
 </code></pre>
 
-<p>
-    The <code>build.gradle</code> file is the build script, which defines the project's dependencies, build plugins, and other configurations.
-</p>
+                        <p>
+                            The <code>build.gradle</code> file is the build script, which defines the project's
+                            dependencies, build plugins, and other configurations.
+                        </p>
 
-<h2 id="gradle_dependencies">8. Managing Dependencies in Gradle</h2>
+                        <h2 id="gradle_dependencies">8. Managing Dependencies in Gradle</h2>
 
-<p>
-    To add a dependency in Gradle, update the <code>build.gradle</code> file by adding the dependency details inside the <code>dependencies</code> block. For example, to add the JUnit library, add the following code to your <code>build.gradle</code>:
-</p>
+                        <p>
+                            To add a dependency in Gradle, update the <code>build.gradle</code> file by adding the
+                            dependency details inside the <code>dependencies</code> block. For example, to add the JUnit
+                            library, add the following code to your <code>build.gradle</code>:
+                        </p>
 
-<pre><code class="language-java">dependencies {
+                        <pre><code class="language-java">dependencies {
     testImplementation 'junit:junit:4.12'
 }
 </code></pre>
 
-<p>
-    Gradle will automatically download the specified dependencies and their transitive dependencies from the Maven Central Repository, JCenter, or other configured repositories.
-</p>
+                        <p>
+                            Gradle will automatically download the specified dependencies and their transitive
+                            dependencies from the Maven Central Repository, JCenter, or other configured repositories.
+                        </p>
 
-<h2 id="comparison">9. Maven vs Gradle: A Comparison</h2>
+                        <h2 id="comparison">9. Maven vs Gradle: A Comparison</h2>
 
-<p>
-    Both Maven and Gradle are powerful build automation and dependency management tools for Java projects. However, they differ in various aspects, such as configuration language, build performance, and flexibility.
-</p>
+                        <p>
+                            Both Maven and Gradle are powerful build automation and dependency management tools for Java
+                            projects. However, they differ in various aspects, such as configuration language, build
+                            performance, and flexibility.
+                        </p>
 
-<table>
-    <thead>
-        <tr>
-            <th>Maven</th>
-            <th>Gradle</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>XML-based configuration</td>
-            <td>Groovy-based DSL configuration</td>
-        </tr>
-        <tr>
-            <td>Standardized project structure</td>
-            <td>Flexible project structure</td>
-        </tr>
-        <tr>
-            <td>Extensive plugin ecosystem</td>
-            <td>Extensive plugin ecosystem</td>
-        </tr>
-        <tr>
-            <td>Faster than Ant, but slower than Gradle</td>
-            <td>Incremental builds make it faster than Maven</td>
-        </tr>
-        <tr>
-            <td>Less flexible and extensible</td>
-            <td>More flexible and extensible</td>
-        </tr>
-    </tbody>
-</table>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Maven</th>
+                                    <th>Gradle</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>XML-based configuration</td>
+                                    <td>Groovy-based DSL configuration</td>
+                                </tr>
+                                <tr>
+                                    <td>Standardized project structure</td>
+                                    <td>Flexible project structure</td>
+                                </tr>
+                                <tr>
+                                    <td>Extensive plugin ecosystem</td>
+                                    <td>Extensive plugin ecosystem</td>
+                                </tr>
+                                <tr>
+                                    <td>Faster than Ant, but slower than Gradle</td>
+                                    <td>Incremental builds make it faster than Maven</td>
+                                </tr>
+                                <tr>
+                                    <td>Less flexible and extensible</td>
+                                    <td>More flexible and extensible</td>
+                                </tr>
+                            </tbody>
+                        </table>
 
-<p>
-    Choosing between Maven and Gradle depends on your project requirements, team familiarity, and personal preferences. Both tools have their advantages and disadvantages, so it's essential to evaluate them based on your specific needs.
-</p>
+                        <p>
+                            Choosing between Maven and Gradle depends on your project requirements, team familiarity,
+                            and personal preferences. Both tools have their advantages and disadvantages, so it's
+                            essential to evaluate them based on your specific needs.
+                        </p>
 
-<h2 id="conclusion">10. Conclusion</h2>
+                        <h2 id="conclusion">10. Conclusion</h2>
 
-<p>
-    In this tutorial, we covered the basics of Java dependency management using Maven and Gradle. Both tools are invaluable for software developers, especially if you're looking to <a href="https://reintech.io/hire-java-developers">hire remote Java developers</a> or build a dedicated Java development team. By understanding the differences between Maven and Gradle, you can choose the best tool for your project and improve your development workflow.
-</p>
-</div>
-<script>
-  function encodePreElements() {
-    var pre = document.getElementsByTagName('code');
-    for(var i = 0; i < pre.length; i++) {
-      var txt = pre[i].innerHTML;
-      txt = txt.replaceAll('&quot;', '"')
-      if(txt.indexOf('>') >=0 && txt.indexOf('<') >= 0){
-        var encoded = htmlEncode(txt);
-  
-        encoded = encoded.replaceAll('&lt;br&gt;', '');
-        encoded = encoded.replaceAll('&lt;p&gt;', '');
-        encoded = encoded.replaceAll('&lt;/p&gt;', '');
-        pre[i].innerHTML = encoded;
-      }
-    }
-  };
-  
-  function htmlEncode(value) {
-    var div = document.createElement('div');
-    var text = document.createTextNode(value);
-    div.appendChild(text);
-    return div.innerHTML;
-  }
-</script>
-<script>
-  encodePreElements();
-</script>
-<div data-react-class="media/OutdatedContent" data-react-props="{&quot;post_id&quot;:&quot;2341&quot;,&quot;url&quot;:&quot;/media/java-dependency-management-maven-gradle/create_outdated_report&quot;,&quot;reports&quot;:[],&quot;locale&quot;:&quot;en&quot;}" data-react-cache-id="media/OutdatedContent-0" class="wrapper-outdated-content mt-2 mb-2"></div>
+                        <p>
+                            In this tutorial, we covered the basics of Java dependency management using Maven and
+                            Gradle. Both tools are invaluable for software developers, especially if you're looking to
+                            hire remote Java developers or build
+                            a dedicated Java development team. By understanding the differences between Maven and
+                            Gradle, you can choose the best tool for your project and improve your development workflow.
+                        </p>
+                    </div>
 
-</div>
-</div>
-</div>
-</div>
-<div class='show-media-second-part'>
-<div class='row mr-0'>
-<div class='col-lg-8 pr-0'>
-</div>
-<div class='col-lg-4'></div>
-</div>
-</div>
+                    <div data-react-class="media/OutdatedContent"
+                        data-react-props="{&quot;post_id&quot;:&quot;2341&quot;,&quot;url&quot;:&quot;/media/java-dependency-management-maven-gradle/create_outdated_report&quot;,&quot;reports&quot;:[],&quot;locale&quot;:&quot;en&quot;}"
+                        data-react-cache-id="media/OutdatedContent-0" class="wrapper-outdated-content mt-2 mb-2"></div>
 
-</main>
-<script type="text/javascript" src="https://secure.food9wave.com/js/218872.js" ></script>
-<noscript><img alt="secure.food" src="https://secure.food9wave.com/218872.png" style="display:none;" /></noscript>
+                </div>
+            </div>
+        </div>
+        </div>
+
+    </main>
 
 
 </body>
+
 </html>

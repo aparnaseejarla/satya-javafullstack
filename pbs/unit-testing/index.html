@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Step by Step Introduction to Unit Testing in Java</title>
+    <meta name="last-updated" content="2024-02-27 15:54:50 UTC">
+    <meta name="user-signed-in" content="false">
+    <meta name="head-cached-at" content="1709049290">
+
+    <meta name="monetization" content="$ilp.uphold.com/24HhrUGG7ekn">
+    <meta name="environment" content="production">
+
+
+    <meta name="description"
+        content="Table of Contents    Table of Contents Introduction Naive way of testing code  What is Unit... Tagged with beginners, testing, java.">
+    <meta name="keywords"
+        content="beginners, testing, java, software, coding, development, engineering, inclusive, community">
+
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Step by Step Introduction to Unit Testing in Java" />
+    <meta property="og:description"
+        content="Table of Contents    Table of Contents Introduction Naive way of testing code  What is Unit..." />
+    <meta property="og:site_name" content="DEV Community" />
+    <meta name="twitter:site" content="@thepracticaldev">
+    <meta name="twitter:creator" content="@">
+    <meta name="twitter:title" content="Step by Step Introduction to Unit Testing in Java">
+    <meta name="twitter:description"
+        content="Table of Contents    Table of Contents Introduction Naive way of testing code  What is Unit...">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:widgets:new-embed-design" content="on">
+    <meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-title" content="dev.to">
+    <meta name="application-name" content="dev.to">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+    <link rel="search" href="https://dev.to/open-search.xml" type="application/opensearchdescription+xml"
+        title="DEV Community" />
+
+    <meta property="forem:domain" content="dev.to" />
+
+</head>
+
+<body class="sans-serif-article-body default-header" data-user-status="logged-out" data-community-name="DEV Community"
+    data-locale="en" data-honeybadger-key="hbp_nqu4Y66HuEKlD6YRGssZuRQnPOjDm50J8Zkr"
+    data-deployed-at="2024-02-26T21:32:23Z" data-latest-commit-id="229c3fc3c01cc30afb3b15c11ab6dfb9cb429369"
+    data-ga-tracking="UA-71991109-1" data-cookie-banner-user-context="logged_out_only"
+    data-cookie-banner-platform-context="off" data-ga4-tracking-id="G-TYEM8Y3JN3">
+
+    <div id="body-styles">
+        <style>
+            :root {
+                --accent-brand-lighter-rgb: 80, 99, 301;
+                --accent-brand-rgb: 59, 73, 223;
+                --accent-brand-darker-rgb: 47, 58, 178;
+            }
+        </style>
+    </div>
+    <div id="audiocontent" data-podcast="">
+
+    </div>
+    <div class="navigation-progress" id="navigation-progress"></div>
+    <header id="topbar" class="crayons-header topbar print-hidden">
+        <span id="route-change-target" tabindex="-1"></span>
+        <span class="inline-block m:hidden ">
+
+            </button>
+        </span>
+
+
+
+
+    </header>
+
+
+
+
+    </div>
+    </div>
+
+    </aside>
+
+    <main id="main-content" class="crayons-layout__content grid gap-4">
+        <div class="article-wrapper">
+
+
+            <article class="crayons-card crayons-article mb-4" id="article-show-container" data-article-id="660802"
+                data-article-slug="step-by-step-introduction-to-unit-testing-in-java-3ae7" data-author-id="48870"
+                data-author-name="Gervin Guevarra" data-author-username="gervg" data-co-author-ids=""
+                data-path="/gervg/step-by-step-introduction-to-unit-testing-in-java-3ae7"
+                data-pin-path="/stories/feed/pinned_article" data-pinned-article-id="" data-published="true"
+                data-scheduled="false" lang=en>
+                <header class="crayons-article__header" id="main-title">
+
+
+
+
+                    <h1 class="fs-3xl m:fs-4xl l:fs-5xl fw-bold s:fw-heavy lh-tight mb-2 medium">
+                        Step by Step Introduction to Unit Testing in Java
+                    </h1>
+
+                    <div class="spec__tags flex flex-wrap">
+                        <a class="crayons-tag   " style="
+        --tag-bg: rgba(0, 131, 53, 0.10);
+        --tag-prefix: #008335;
+        --tag-bg-hover: rgba(0, 131, 53, 0.10);
+        --tag-prefix-hover: #008335;
+      " href="/t/beginners"><span class="crayons-tag__prefix"></span></a>
+                        <a class="crayons-tag   " style="
+        --tag-bg: rgba(1, 155, 101, 0.10);
+        --tag-prefix: #019b65;
+        --tag-bg-hover: rgba(1, 155, 101, 0.10);
+        --tag-prefix-hover: #019b65;
+      " href="/t/testing"><span class="crayons-tag__prefix"></span></a>
+                        <a class="crayons-tag   " style="
+        --tag-bg: rgba(126, 72, 16, 0.10);
+        --tag-prefix: #7e4810;
+        --tag-bg-hover: rgba(126, 72, 16, 0.10);
+        --tag-prefix-hover: #7e4810;
+      " href="/t/java"><span class="crayons-tag__prefix"></span></a>
+                    </div>
+        </div>
+        </header>
+
+        <div class="crayons-article__main">
+
+            <div class="crayons-article__body text-styles spec__body" data-article-id="660802" id="article-body">
+                <h2>
+                    <a name="table-of-contents" href="#table-of-contents">
+                    </a>
+                    Table of Contents
+                </h2>
+
+                <ul>
+                    <li><a href="#table-of-contents">Table of Contents</a></li>
+                    <li><a href="#introduction">Introduction</a></li>
+                    <li><a href="#naive-way-of-testing-code">Naive way of testing code</a></li>
+                    <li>
+                        <a href="#what-is-unit-testing">What is Unit testing?</a>
+
+                        <ul>
+                            <li><a href="#an-analogy">An analogy</a></li>
+                        </ul>
+
+
+                    </li>
+                    <li>
+                        <a href="#getting-your-feet-wet">Getting your feet wet</a>
+
+                        <ul>
+                            <li><a href="#prerequisites">Prerequisites</a></li>
+                            <li><a href="#a-sample-existing-code">A sample existing code</a></li>
+                            <li><a href="#setting-up-the-testing-framework">Setting up the testing framework</a></li>
+                            <li><a href="#separating-source-code-and-test-code">Separating source code and test code</a>
+                            </li>
+                            <li><a href="#writing-your-first-unit-test">Writing your first unit test</a></li>
+                            <li><a href="#running-the-test-and-using-the-results-to-debug">Running the test and using
+                                    the results to debug</a></li>
+                        </ul>
+
+
+                    </li>
+                    <li><a href="#final-notes">Final notes</a></li>
+                    <li><a href="#further-reading">Further Reading</a></li>
+                </ul>
+
+
+                <hr>
+                <h2>
+                    <a name="introduction" href="#introduction">
+                    </a>
+                    Introduction
+                </h2>
+
+                <p>Hey folks! So I kinda promised to someone I forgot who that I'll write a unit testing guide for this
+                    <a href="https://www.facebook.com/groups/649943542157470?_rdc=1&amp;_rdr">group</a>. There must be
+                    hundreds of similar guides out there in the wild, but I feel like most of those I've seen are too
+                    short and doesn't really explain the rationale behind unit testing. I think unit testing is one of
+                    the most underrated skill that a programmer should learn and sadly it isn't taught in schools (in
+                    our country, at least). So here's my take on a (hopefully) gentle introduction to the world of
+                    automated testing. </p>
+
+                <p>Anyway, enough with my babbling. Let's get right into it.</p>
+                <h2>
+                    <a name="naive-way-of-testing-code" href="#naive-way-of-testing-code">
+                    </a>
+                    Naive way of testing code
+                </h2>
+
+                <p>When we first started learning programming, what we'd normally do is write code, run the program.
+                    Then conduct tests by entering some inputs hoping that the output is as we desired. If not, we go
+                    back writing our code again and fixing bugs.</p>
+
+                <p>Well, there's nothing wrong with that. In fact, for your entire life as a programmer you'd be doing
+                    all these three things:</p>
+
+                <p>1) <strong>write</strong> code</p>
+
+                <p>2) <strong>run</strong> the program</p>
+
+                <p>3) <strong>test</strong> the behavior of your program</p>
+
+                <p>Then repeat again</p>
+
+                <p>But you won't always be writing simple console applications. Sooner or later, you'll find yourself
+                    doing repetitive tests with slightly varying inputs.</p>
+
+                <p>In the real world where you'd be dealing with much much bigger and more complex software, doing those
+                    three things every time will be <strong>very time consuming</strong>. There will also be cases where
+                    you need to isolate your changes and just <strong>test a specific part</strong> rather than the
+                    whole system.</p>
+                <h2>
+                    <a name="what-is-unit-testing" href="#what-is-unit-testing">
+                    </a>
+                    What is Unit testing?
+                </h2>
+
+                <p>So instead of running and testing your entire program every time you have to a change in your code,
+                    we can automate it by <strong>writing code to test our code</strong>. More specifically, write code
+                    that would test a single part of the system isolated from everything else. That's unit testing.</p>
+                <h3>
+                    <a name="an-analogy" href="#an-analogy">
+                    </a>
+                    An analogy
+                </h3>
+
+                <p>For example, you are building a house and you need some light bulbs. So you go to the store and buy a
+                    light bulb. In order to make sure that the light bulb you just bought works, you need to test it.
+                </p>
+
+                <p>But the good thing about it is that it's independent of your house. You can test it by itself. No
+                    need to actually install it in your house and see if it lights up. Instead, you or the sales
+                    assistant can install it to a test bulb socket (found in most hardware or appliance stores) and see
+                    if it lights up. You are essentially <strong>testing</strong> a single <strong>unit</strong> of a
+                    light bulb which is meant to be part of your house (i.e. the entire system) under construction.</p>
+
+                <p>Imagine if it wasn't possible to test the light bulb alone. You have to go back to your house first,
+                    finish building it, install the light bulbs and test if it actually switches on. Quite a hassle,
+                    isn't it?</p>
+                <h2>
+                    <a name="getting-your-feet-wet" href="#getting-your-feet-wet">
+                    </a>
+                    Getting your feet wet
+                </h2>
+                <h3>
+                    <a name="prerequisites" href="#prerequisites">
+                    </a>
+                    Prerequisites
+                </h3>
+
+                <p>Before taking this guide, be sure that you are already familiar with Java language as I will not be
+                    going through the detail of compiling and running your Java program. Also be sure to have an
+                    internet connection as we will be downloading some tools, and libraries. This guide also assumes
+                    that you have an existing project where you want to add unit testing. If not, you can just
+                    copy-paste the Java files below and follow along.</p>
+
+                <p>It's also worth noting that the guide, for now, is also written to suit MacOS or Linux users. But
+                    experienced Windows users may also want to try anyway (and let me know where it gets difficult! I'll
+                    make updates on this guide where necessary).</p>
+
+                <p>Below is short list of everything you need:</p>
+
+                <ul>
+                    <li>
+                        <strong>Java 8</strong> or higher (I'm using Java 8. But to follow this guide, it doesn't matter
+                        if you're using a newer version)
+                    </li>
+                    <li>Favorite <strong>Code editor or IDE</strong> (I use IntelliJ IDEA myself, but you're free to use
+                        whatever you want)</li>
+                    <li>
+                        <strong>Gradle</strong> build tool (download and follow the guide <a
+                            href="https://gradle.org/install/">here</a>)
+
+                        <ul>
+                            <li>in case you are already using Gradle, you may want to skip to <a
+                                    href="#setting-up-the-testing-framework">this step and just add JUnit to your
+                                    dependencies</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>Command Line (Shell or Command Prompt)
+
+                        <ul>
+                            <li>we'll be doing things from scratch, so having familiarity working in terminal is a great
+                                plus</li>
+                            <li>this also makes this guide IDE-agnostic, meaning you don't have to be very dependent on
+                                a specific IDE just to make this work</li>
+                            <li>if you're on Windows, you may opt to use WSL or the bash prompt that comes with Git (if
+                                you are already using one).</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h3>
+                    <a name="a-sample-existing-code" href="#a-sample-existing-code">
+                    </a>
+                    A sample existing code
+                </h3>
+
+                <p>Say we have an existing console application which accepts input of any length from the user and then
+                    our program outputs the reverse of the input. Classic problem.</p>
+
+                <p>So we can implement this by writing the following:</p>
+
+
+                <div class="ltag_gist-liquid-tag">
+                    <script id="gist-ltag"
+                        src="https://gist.github.com/Gerv-G/9de5cc29fad0a50dd66214fcc2fcc41d/76f17d42cd399981c3c94958b98b320a468f2ed3.js"></script>
+                </div>
+
+
+                <p>You might notice a "bug" here. That's intentional. We'll delve into that later</p>
+
+                <p><a href="https://res.cloudinary.com/practicaldev/image/fetch/s--PxrunrRT--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_800/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/if9sag99945nq0la5pi3.png"
+                        class="article-body-image-wrapper"><img
+                            src="https://res.cloudinary.com/practicaldev/image/fetch/s--PxrunrRT--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_800/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/if9sag99945nq0la5pi3.png"
+                            alt="File structure 1" loading="lazy" width="800" height="274"></a></p>
+
+                <p>At this point, your project structure should look similar to this. It's alright if you don't have the
+                    <em>.idea</em> folder or the *<em>.iml</em> file. Those are just IntelliJ IDEA generated files.</p>
+
+                <h3>
+                    <a name="setting-up-the-testing-framework" href="#setting-up-the-testing-framework">
+                    </a>
+                    Setting up the testing framework
+                </h3>
+
+                <p>The testing framework that we're gonna use is <strong><a
+                            href="https://junit.org/junit4/">JUnit</a>.</strong> To add it in our project, we need a
+                    <em>dependency manager</em> such as Gradle.</p>
+
+                <blockquote>
+                    <p>💡 <strong>Dependency Manager</strong><br>
+                        The great thing about OOP is that it allows us to reuse somebody else's code. Those reusable
+                        pieces of code often mature enough that they can be standalone libraries or frameworks. They
+                        then get redistributed by various means, either by downloading the JAR files, as in the case of
+                        Java, or getting the source code and building it by yourself. These libraries or frameworks
+                        become the <em>dependencies</em> of your project. Some of these libraries/frameworks have
+                        dependencies of their own, so you also have to take care of them and add them to your project.
+                    </p>
+
+                    <p>But doing so multiple times over the duration of your project can be time-consuming, entails
+                        difficulties, and is a very repetitive processes. This is where dependency manager comes in.</p>
+
+                    <p>A <strong>dependency manager</strong> is a tool that helps you download libraries and/or
+                        frameworks, as well as their dependencies, to add to your project; while also keeping track of
+                        the version you are using for each. Some examples of popular dependency managers for Java
+                        projects are <strong>Gradle</strong> and <strong>Maven</strong> (which also functions as build
+                        tools).</p>
+
+                    <p>For further reading about dependency managers and what they can do, check out <a
+                            href="https://medium.com/prodsters/what-are-dependency-managers-26d7d907deb8">this
+                            article</a> by Seun Matt in Medium</p>
+                </blockquote>
+
+                <p>If you have prepared the <a href="#prerequisites">prerequisites</a> listed earlier, you should have
+                    Gradle already installed in your system. To check, enter the following in your terminal and it
+                    should output a directory where you installed Gradle.<br>
+                </p>
+
+                <div class="highlight js-code-highlight">
+                    <pre class="highlight shell"><code><span class="nv">$ </span>which gradle
+</code></pre>
+                    <div class="highlight__panel js-actions-panel">
+                        <div class="highlight__panel-action js-fullscreen-code-action">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24"
+                                class="highlight-action crayons-icon highlight-action--fullscreen-on">
+                                <title>Enter fullscreen mode</title>
+                                <path
+                                    d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z">
+                                </path>
+                            </svg>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24"
+                                class="highlight-action crayons-icon highlight-action--fullscreen-off">
+                                <title>Exit fullscreen mode</title>
+                                <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z">
+                                </path>
+                            </svg>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <p>Next, we need to turn our existing console application project into a Gradle project. Expand each
+                    step by clicking the drop-down then follow the instructions</p>
+
+                <ul>
+                    <li>
+                        <p>Go to your project directory</p>
+
+                        <p>In my case, my project is saved in <code>Users/gerv/Source/HelloUnitTesting</code>. I can use
+                            <code>~</code> as short hand for my User home directory.<br>
+                        </p>
+                        <pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">cd</span> ~/Source/HelloUnitTesting
+</code></pre>
+
+                    </li>
+                    <li>
+                        <p>Initialize a Gradle project</p>
+
+                        <p>Simple enter the following command and follow the on-screen instructions to setup gradle for
+                            your project<br>
+                        </p>
+                        <pre class="highlight shell"><code><span class="nv">$ </span>gradle init
+</code></pre>
+
+
+                        <p>If you're confused, you can just follow the screenshot below.<br>
+                            <a href="https://res.cloudinary.com/practicaldev/image/fetch/s--fkFpGHsl--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_800/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/tmc5th1thg62gq2qx3cj.png"
+                                class="article-body-image-wrapper"><img
+                                    src="https://res.cloudinary.com/practicaldev/image/fetch/s--fkFpGHsl--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_800/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/tmc5th1thg62gq2qx3cj.png"
+                                    alt="Gradle init output" loading="lazy" width="800" height="715"></a>
+                        </p>
+
+                        <p>You might notice that my shell prompt is different. That's because I'm using zsh with
+                            oh-my-zsh, but that's a topic for another day. For now, think of that fancy arrow as the
+                            <code>$</code> sign you normally see.</p>
+                    </li>
+                    <li>
+                        <p>Run your first Gradle build<br>
+                        </p>
+                        <pre class="highlight shell"><code><span class="nv">$ </span>gradle build
+</code></pre>
+
+
+                        <p>Then you should see an output similar to this:<br>
+                            <a href="https://res.cloudinary.com/practicaldev/image/fetch/s--7aZ8Bz0P--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_800/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/56g7yqfcq02u295fwdfj.png"
+                                class="article-body-image-wrapper"><img
+                                    src="https://res.cloudinary.com/practicaldev/image/fetch/s--7aZ8Bz0P--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_800/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/56g7yqfcq02u295fwdfj.png"
+                                    alt="Gradle build output" loading="lazy" width="800" height="192"></a>
+                        </p>
+                    </li>
+                </ul>
+
+                <p>You might notice that there are a bunch of files added to your project folder. These are files that
+                    are generated by <code>gradle init</code> and will be used by Gradle when building your project. You
+                    may happily ignore them for now, but I want to quickly introduce you to one of them, the
+                    <code>build.gradle</code> file. This is the file that contains the list of your dependencies and
+                    repositories (from which your dependencies will be downloaded). Take a quick look at it and notice
+                    that JUnit is already added; this because we picked JUnit earlier when we ran
+                    <code>gradle init</code> .</p>
+
+
+                <div class="ltag_gist-liquid-tag">
+                    <script id="gist-ltag"
+                        src="https://gist.github.com/Gerv-G/02ad046eea2cca271173ee7b0fa3ca0c.js"></script>
+                </div>
+
+
+
+                <p>You may also notice that <code>main</code> and <code>test</code> folders are added to the project. We
+                    will use them to reorganize our code.</p>
+
+                <h3>
+                    <a name="separating-source-code-and-test-code" href="#separating-source-code-and-test-code">
+                    </a>
+                    Separating source code and test code
+                </h3>
+
+                <p>Gradle isn't smart enough to know that you already have existing code in your project, and assumes
+                    that you are starting a Gradle project from scratch. So it creates its own folders, package, the
+                    class named <code>App.java</code> with the <code>main()</code> method.</p>
+
+                <p>After running <code>gradle init</code> , your project directory should look like this.<br>
+                    <a href="https://res.cloudinary.com/practicaldev/image/fetch/s--IbAK5zGr--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_800/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mi16gb61bwdwg0txi115.png"
+                        class="article-body-image-wrapper"><img
+                            src="https://res.cloudinary.com/practicaldev/image/fetch/s--IbAK5zGr--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_800/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mi16gb61bwdwg0txi115.png"
+                            alt="File structure after gradle init" loading="lazy" width="800" height="865"></a>
+                </p>
+
+                <p>But we already have <a href="#a-sample-existing-code">ConsoleApplication.java</a> and that serves as
+                    the main entry point of our application so we can just get rid of <code>App.java</code>. We also
+                    don't need the package <code>HelloUnitTesting</code> since we already have an existing one from
+                    before. Delete them as you normally would, or if you're like me and you like doing everything in
+                    terminal<br>
+                </p>
+
+                <div class="highlight js-code-highlight">
+                    <pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">rm</span> <span class="nt">-r</span> src/main/java/HelloUnitTesting
+</code></pre>
+                    <div class="highlight__panel js-actions-panel">
+                        <div class="highlight__panel-action js-fullscreen-code-action">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24"
+                                class="highlight-action crayons-icon highlight-action--fullscreen-on">
+                                <title>Enter fullscreen mode</title>
+                                <path
+                                    d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z">
+                                </path>
+                            </svg>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24"
+                                class="highlight-action crayons-icon highlight-action--fullscreen-off">
+                                <title>Exit fullscreen mode</title>
+                                <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z">
+                                </path>
+                            </svg>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="highlight js-code-highlight">
+                    <pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">rm</span> <span class="nt">-r</span> src/test/java/HelloUnitTesting
+</code></pre>
+                    <div class="highlight__panel js-actions-panel">
+                        <div class="highlight__panel-action js-fullscreen-code-action">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24"
+                                class="highlight-action crayons-icon highlight-action--fullscreen-on">
+                                <title>Enter fullscreen mode</title>
+                                <path
+                                    d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z">
+                                </path>
+                            </svg>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24"
+                                class="highlight-action crayons-icon highlight-action--fullscreen-off">
+                                <title>Exit fullscreen mode</title>
+                                <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z">
+                                </path>
+                            </svg>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <figure><img
+                        src="https://res.cloudinary.com/practicaldev/image/fetch/s--BZXcLnyG--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_800/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/cs66g1h560qctdwjtvkn.png"
+                        loading="lazy" width="800" height="838">
+                    <figcaption>Project directory after deleting some files</figcaption>
+                </figure>
+
+
+
+                <p>Then we need to reorganize our code and put them inside the <code>main/java/</code> folder. To do
+                    this, you can either drag the <code>com.gerv.guev</code> (or whatever your existing package name is)
+                    to <code>main/java/</code> or do it via terminal again<br>
+                </p>
+                <div class="highlight js-code-highlight">
+                    <pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">mv </span>src/com src/main/java/com
+</code></pre>
+                    <div class="highlight__panel js-actions-panel">
+                        <div class="highlight__panel-action js-fullscreen-code-action">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24"
+                                class="highlight-action crayons-icon highlight-action--fullscreen-on">
+                                <title>Enter fullscreen mode</title>
+                                <path
+                                    d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z">
+                                </path>
+                            </svg>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24"
+                                class="highlight-action crayons-icon highlight-action--fullscreen-off">
+                                <title>Exit fullscreen mode</title>
+                                <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z">
+                                </path>
+                            </svg>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <p>If you're also using IntelliJ IDEA, you might notice that <code>main/java</code> is marked like a
+                    package even though it isn't. To make them appear like normal folders, simply right click on the
+                    <code>src</code> then point to <em>Mark Directory As</em> and pick <em>Unmark as Sources Root</em>.
+                    Then right click on <code>java</code> folder under <code>main</code> then <em>Mark Directory As</em>
+                    and pick <em>Sources Root.</em> Do the same thing with the <code>java</code> folder under
+                    <code>test</code>, but pick <em>Test Sources Root</em>. For the <code>resources</code> folder, mark
+                    them as <em>Resources Root</em> and <em>Test Resources Root</em> for <code>main</code> and
+                    <code>test</code> respectively.</p>
+
+                <p>If you've carefully followed the instructions, your project directory should now look something like
+                    this:</p>
+
+                <p><a href="https://res.cloudinary.com/practicaldev/image/fetch/s--pdOy--FT--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_800/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/6ouc7hj2jat8l5bh4fr0.png"
+                        class="article-body-image-wrapper"><img
+                            src="https://res.cloudinary.com/practicaldev/image/fetch/s--pdOy--FT--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_800/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/6ouc7hj2jat8l5bh4fr0.png"
+                            alt="File structure after setting up Gradle" loading="lazy" width="800" height="762"></a>
+                </p>
+
+                <p>To quickly check if everything still works, run this and it should tell you "Build Successful". You
+                    may also want to try and run your program if it still works as before.<br>
+                </p>
+                <div class="highlight js-code-highlight">
+                    <pre class="highlight shell"><code><span class="nv">$ </span>gradle build
+</code></pre>
+                    <div class="highlight__panel js-actions-panel">
+                        <div class="highlight__panel-action js-fullscreen-code-action">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24"
+                                class="highlight-action crayons-icon highlight-action--fullscreen-on">
+                                <title>Enter fullscreen mode</title>
+                                <path
+                                    d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z">
+                                </path>
+                            </svg>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24"
+                                class="highlight-action crayons-icon highlight-action--fullscreen-off">
+                                <title>Exit fullscreen mode</title>
+                                <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z">
+                                </path>
+                            </svg>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <p>If your gradle build is successful but your IDE is complaining (i.e. squiggly red lines, you can just
+                    reimport/reopen your project and hopefully your IDE recognizes that it's now a Gradle project.</p>
+
+                <p><strong>Quick Recap!</strong><br>
+                    That's a lot of things we've already covered. Here's what we've done so far:</p>
+
+                <ul>
+                    <li>turn our project into a Gradle project</li>
+                    <li>add JUnit to our dependencies</li>
+                    <li>Reorganize our project folders</li>
+                </ul>
+                <h3>
+                    <a name="writing-your-first-unit-test" href="#writing-your-first-unit-test">
+                    </a>
+                    Writing your first unit test
+                </h3>
+
+                <p>Now that we have finished setting up our project and its dependencies, we are now ready to write our
+                    unit test!</p>
+
+                <p>Under the <code>test/java</code> folder, create a package <code>com.gerv.guev</code> or whatever
+                    package name you already used in your project. Then create a file named
+                    <code>MyStringUtilitiesTest.java</code>. You may copy the contents of the class for now, I'll
+                    explain what it does along the way.</p>
+
+
+                <div class="ltag_gist-liquid-tag">
+                    <script id="gist-ltag"
+                        src="https://gist.github.com/Gerv-G/5aa84d5f186bab82fcf898ec036774e7/c91b719c0a92ef76ab0edd6aa20a1f2d5d2fd559.js"></script>
+                </div>
+
+
+
+                <p>Then we are going to add a test method that actually does nothing. We're taking very small steps to
+                    make sure we're not making mistakes and everything is still working as it is.</p>
+
+
+                <div class="ltag_gist-liquid-tag">
+                    <script id="gist-ltag"
+                        src="https://gist.github.com/Gerv-G/5aa84d5f186bab82fcf898ec036774e7/0e025920197746f91636292c417273b00b1e8972.js"></script>
+                </div>
+
+
+                <p>In the code above, <code>@Test</code> is an annotation that tells our compiler that the method that
+                    we just wrote is a <strong>test method</strong>. <code>@Test</code> annotation is located under the
+                    <code>org.junit</code> package (notice the <code>import</code> statement above).</p>
+
+                <p>A method marked as a <strong>test method</strong> will be checked by the test runner if it satisfies
+                    some conditions we are expecting. In this case, the test should always pass because we told it to
+                    <code>assert true</code> which will always be true no matter what. The point of writing this the
+                    first time is to check if our unit testing framework was really set up correctly. After you've
+                    written one or if you're already familiar with the testing framework your are using, there's no need
+                    to write this one every time.</p>
+
+                <p>To run the test, type in this command<br>
+                </p>
+
+                <div class="highlight js-code-highlight">
+                    <pre class="highlight shell"><code><span class="nv">$ </span>gradle <span class="nb">test</span> <span class="nt">--tests</span><span class="o">=</span><span class="s2">"com.gerv.guev.MyStringUtilitiesTest.someUselessTest"</span>
+</code></pre>
+                    <div class="highlight__panel js-actions-panel">
+                        <div class="highlight__panel-action js-fullscreen-code-action">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24"
+                                class="highlight-action crayons-icon highlight-action--fullscreen-on">
+                                <title>Enter fullscreen mode</title>
+                                <path
+                                    d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z">
+                                </path>
+                            </svg>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24"
+                                class="highlight-action crayons-icon highlight-action--fullscreen-off">
+                                <title>Exit fullscreen mode</title>
+                                <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z">
+                                </path>
+                            </svg>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <p>In the command above, we are telling Gradle to run the test found in a fully qualified name. In this
+                    case we're telling it to specifically run <code>someUselessTest()</code> test method.</p>
+
+                <p>A <strong>fully qualified name</strong> consists of the package name, class name, and method name. It
+                    represents the hierarchical location of your file or folder and should always be unique.</p>
+
+                <p>But if you have multiple tests inside a class or package, you can just replace it with an asterisk
+                    (*) and it should still run<br>
+                </p>
+                <div class="highlight js-code-highlight">
+                    <pre class="highlight shell"><code><span class="nv">$ </span>gradle <span class="nb">test</span> <span class="nt">--tests</span><span class="o">=</span><span class="s2">"com.gerv.guev.MyStringUtilitiesTest.*"</span>
+</code></pre>
+                    <div class="highlight__panel js-actions-panel">
+                        <div class="highlight__panel-action js-fullscreen-code-action">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24"
+                                class="highlight-action crayons-icon highlight-action--fullscreen-on">
+                                <title>Enter fullscreen mode</title>
+                                <path
+                                    d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z">
+                                </path>
+                            </svg>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24"
+                                class="highlight-action crayons-icon highlight-action--fullscreen-off">
+                                <title>Exit fullscreen mode</title>
+                                <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z">
+                                </path>
+                            </svg>
+
+                        </div>
+                    </div>
+                </div>
+
+                <h3>
+                    <a name="running-the-test-and-using-the-results-to-debug"
+                        href="#running-the-test-and-using-the-results-to-debug">
+                    </a>
+                    Running the test and using the results to debug
+                </h3>
+
+                <p>Now, let's replace that useless test with a real one to test our earlier <a
+                        href="#a-sample-existing-code">code</a> for reversing a string.</p>
+
+
+                <div class="ltag_gist-liquid-tag">
+                    <script id="gist-ltag"
+                        src="https://gist.github.com/Gerv-G/5aa84d5f186bab82fcf898ec036774e7/db36bc2872dbaa0030c9cc4872c2d027d95fc2c1.js"></script>
+                </div>
+
+
+
+                <p>Go ahead and run the test using the command mentioned earlier, and you should see an error similar to
+                    this<br>
+                </p>
+
+                <div class="highlight js-code-highlight">
+                    <pre class="highlight shell"><code><span class="o">&gt;</span> Task :test FAILED
+
+com.gerv.guev.MyStringUtilitiesTest <span class="o">&gt;</span> shouldReturn_ReverseString FAILED
+    org.junit.ComparisonFailure at MyStringUtilitiesTest.java:14
+
+1 <span class="nb">test </span>completed, 1 failed
+
+FAILURE: Build failed with an exception.
+
+<span class="k">*</span> What went wrong:
+Execution failed <span class="k">for </span>task <span class="s1">':test'</span><span class="nb">.</span>
+<span class="o">&gt;</span> There were failing tests. See the report at: file:///Users/gerv/Source/HelloUnitTesting/build/reports/tests/test/index.html
+
+<span class="k">*</span> Try:
+Run with <span class="nt">--stacktrace</span> option to get the stack trace. Run with <span class="nt">--info</span> or <span class="nt">--debug</span> option to get more log output. Run with <span class="nt">--scan</span> to get full insights.
+
+<span class="k">*</span> Get more <span class="nb">help </span>at https://help.gradle.org
+
+BUILD FAILED <span class="k">in </span>1s
+3 actionable tasks: 1 executed, 2 up-to-date
+</code></pre>
+                    <div class="highlight__panel js-actions-panel">
+                        <div class="highlight__panel-action js-fullscreen-code-action">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24"
+                                class="highlight-action crayons-icon highlight-action--fullscreen-on">
+                                <title>Enter fullscreen mode</title>
+                                <path
+                                    d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z">
+                                </path>
+                            </svg>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24"
+                                class="highlight-action crayons-icon highlight-action--fullscreen-off">
+                                <title>Exit fullscreen mode</title>
+                                <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z">
+                                </path>
+                            </svg>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+            </div>
+        </div>
+
+
+        </div>
+
+        </form>
+
+
+        <div class="comments" id="comment-trees-container">
+        </div>
+        </div>
+
+        <div class="align-center">
+
+
+
+        </div>
+
+        </section>
+
+        </form>
+
+
+        </article>
+
+
+
+
+        </section>
+
+        </div>
+    </main>
+
+
+
+    </div>
+    </div>
+
+
+
+
+</body>
+
+</html>
