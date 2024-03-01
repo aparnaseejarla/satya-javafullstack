@@ -11,13 +11,14 @@ const loadDataFromLocalstorage = () => {
     // Load saved chats and theme from local storage and apply/add on the page
     const themeColor = localStorage.getItem("themeColor");
 
-    document.body.classList.toggle("light-mode", themeColor === "light_mode");
-    themeButton.innerText = document.body.classList.contains("light-mode") ? "dark_mode" : "light_mode";
+    document.body.classList.toggle("dark-mode", themeColor === "dark-mode");
+    themeButton.innerText = document.body.classList.contains("dark-mode") ? "dark_mode" : "dark-mode";
 
     const defaultText = `<div class="default-text">
-                            <h1>ChatGPT</h1>
-                            <p>Start a conversation and explore the power of AI.<br> Your chat history will be displayed here.</p>
-                        </div>`
+                            <h1>Ask your questions to ChatGPT</h1>
+                            <p style="background-color:tomato;">Start a conversation and explore the power of AI.<br> Your chat history will be displayed here.</p>
+                            <p>Monthly Subscription activated soon...
+                            </div>`
 
     chatContainer.innerHTML = localStorage.getItem("all-chats") || defaultText;
     chatContainer.scrollTo(0, chatContainer.scrollHeight); // Scroll to bottom of the chat container
@@ -106,7 +107,7 @@ const handleOutgoingChat = () => {
 
     const html = `<div class="chat-content">
                     <div class="chat-details">
-                        <img src="images/user.jpg" alt="user-img">
+                        <img src="images/easyai.png">
                         <p>${userText}</p>
                     </div>
                 </div>`;
@@ -129,9 +130,9 @@ deleteButton.addEventListener("click", () => {
 
 themeButton.addEventListener("click", () => {
     // Toggle body's class for the theme mode and save the updated theme to the local storage 
-    document.body.classList.toggle("light-mode");
+    document.body.classList.toggle("dark-mode");
     localStorage.setItem("themeColor", themeButton.innerText);
-    themeButton.innerText = document.body.classList.contains("light-mode") ? "dark_mode" : "light_mode";
+    themeButton.innerText = document.body.classList.contains("dark-mode") ? "dark_mode" : "dark_mode";
 });
 
 const initialInputHeight = chatInput.scrollHeight;
