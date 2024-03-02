@@ -116,7 +116,7 @@
 <p>No matter what you want to do, you&#8217;ll need to make sure to have an appropriate logging library and then configure and use it correctly.</p>
 </div>
 <div class="paragraph">
-<p>Unfortunately, the Java universe has a plethora of logging libraries available (see <a href="https://www.marcobehler.com/episodes/109-understanding-java-logging-hell-the-basics">this video</a> for a nice overview of Java logging hell) and a developer should have a rough understanding of why there are that many options and when to use which option.</p>
+<p>Unfortunately, the Java universe has a plethora of logging libraries available and a developer should have a rough understanding of why there are that many options and when to use which option.</p>
 </div>
 <div class="paragraph">
 <p>Let&#8217;s find out.</p>
@@ -262,7 +262,7 @@ lead to people developing and using other logging frameworks.</p>
 <p>Somewhat in parallel, he also started writing the Simple Logging Facade for Java, also known as <a href="https://www.slf4j.org/">SLF4J</a>, which is very similar to the Apache Commons Logging 'bridging' library above, just with a better implementation. Let&#8217;s see what that means:</p>
 </div>
 <div class="paragraph">
-<p>To get started with SLF4J, you only need one library on the classpath, the slf4j-api dependency (<a href="https://www.marcobehler.com/episodes/110-slf4j-how-to-set-it-up">see screencast</a> for the following section). If you are using a dependency management tool like <a href="https://maven.apache.org/">Maven</a>, then you would add the following dependency to your dependencies section:</p>
+<p>To get started with SLF4J, you only need one library on the classpath, the slf4j-api dependency . If you are using a dependency management tool like <a href="https://maven.apache.org/">Maven</a>, then you would add the following dependency to your dependencies section:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -328,7 +328,7 @@ Your own application uses SLF4J, but you cannot just go and change the source co
 <p>What to do now?</p>
 </div>
 <div class="paragraph">
-<p>Thankfully, the SLF4J creators thought about that use-case as well (see <a href="https://www.marcobehler.com/episodes/112-routing-log4j-logback-commons-logging-and-jul-through-slf4j-in-the-same-project">screencast here</a>). Let&#8217;s see what that looks like, by looking at the Maven dependencies first:</p>
+<p>Thankfully, the SLF4J creators thought about that use-case as well see what that looks like, by looking at the Maven dependencies first:</p>
 </div>
 <div class="paragraph">
 <p>Whenever you pull in a 3rd party-library that uses Log4j, it will, obviously, pull in the Log4j dependency. The Log4j dependency looks like this:</p>
@@ -509,7 +509,7 @@ Other than that there seems to be very little reason to base your project entire
 feel unsure of when to use which one.</p>
 </div>
 <div class="paragraph">
-<p>Here&#8217;s a general approach that I&#8217;ve seen used successfully in a few places, but note that this is not written in stone (see <a href="https://www.marcobehler.com/episodes/132-what-log-levels-to-use-when-logging-in-your-java-applications">screencast here</a>). Make changes to these guidelines where appropriate, but make sure you have a solid use case and reasoning for it. And most importantly, make sure that
+<p>Here&#8217;s a general approach that I&#8217;ve seen used successfully in a few places, but note that this is not written in stone. Make changes to these guidelines where appropriate, but make sure you have a solid use case and reasoning for it. And most importantly, make sure that
 your developers and operations guys are on the same page.</p>
 </div>
 <div class="paragraph">
