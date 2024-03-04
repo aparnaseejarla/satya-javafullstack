@@ -14,6 +14,9 @@
   <meta name='robots' content='max-image-preview:large' />
   <link rel='dns-prefetch' href='http://fonts.googleapis.com/' />
   <link href='https://fonts.gstatic.com/' crossorigin rel='preconnect' />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <link rel="alternate" type="application/rss+xml" title="Pbssoft &raquo; Feed" href="feed/index.html" />
   <link rel="alternate" type="application/rss+xml" title="Pbssoft &raquo; Comments Feed"
     href="comments/feed/index.html" />
@@ -639,6 +642,7 @@
     href="wp-json/oembed/1.0/embedba70.json?url=http%3A%2F%2Fwww.pbssoft.com%2F" />
   <link rel="alternate" type="text/xml+oembed"
     href="wp-json/oembed/1.0/embed888d?url=http%3A%2F%2Fwww.pbssoft.com%2F&amp;format=xml" />
+    <script src="./wp-content/plugins/elementor/assets/js/text-editor.2c35aafbe5bf0e127950.bundle.min.js"></script>
 
   <style id="learn-press-custom-css">
     :root {
@@ -1627,7 +1631,17 @@
     .course-meta.course-meta-secondary {
       display: none;
     }
-
+    .modal-body {
+    background-image: url('./wp-content/uploads/2023/ai.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    text-decoration-color: #442e66;
+    height: 400px;
+}
+.modal-header {
+  background-color: darkblue;
+  color: white;
+}
     .course-price {
       display: none !important;
     }
@@ -2320,6 +2334,7 @@
                                       <a href="contact/index.html" class="rep-btn right-btn">Contact Us</a>
                                     </div>
 
+
                                   </div>
 
                                 </div>
@@ -2348,6 +2363,10 @@
                                       <a href="our-courses/index.html" class="rep-btn left-btn">All Courses</a>
                                     </div>
 
+                                    <div class="slider-btn-left">
+                                      <a href="#" data-toggle="modal" data-target="#myModal"  class="rep-btn left-btn">Benfits</a>
+                                    </div>
+
                                     <div class="slider-btn-right">
                                       <a href="contact/index.html" class="rep-btn right-btn">Contact Us</a>
                                     </div>
@@ -2372,6 +2391,44 @@
             </div>
           </div>
         </section>
+
+        <div class="container">
+          <h2>Modal Example</h2>
+          <!-- Trigger the modal with a button -->
+          <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+        
+          
+          <!-- Modal -->
+          <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+            
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title" style="color: greenyellow;"><b>Student Benfits</b></h4>
+                </div>
+                <div class="modal-body">
+                  <p style="color: greenyellow;">1.Recorded Sessions</p>
+                  <p style="color: greenyellow;">2.Powerpoint Presentations</p>
+                  <p style="color: greenyellow;" >3.Realtime Demo Examples</p>
+                  <p style="color: greenyellow;" >4.Pbssoft Certificate</p>
+                  <p style="color: greenyellow;" >5.Mock Interviews</p>
+                  <p style="color: greenyellow;" >6.IT Career Guidence</p>
+                  <p style="color: greenyellow;" >7.Resume Preparation</p>
+                  <p style="color: greenyellow;" >8.Flexible Timings</p>
+                  <p style="color: greenyellow;" >9.Realtime Tech Terminology</p>
+                  <p style="color: greenyellow;" >10.Realtime Project</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+
         <section
           class="elementor-section elementor-top-section elementor-element elementor-element-8d72f5f elementor-section-stretched elementor-section-boxed elementor-section-height-default elementor-section-height-default"
           data-id="8d72f5f" data-element_type="section"
