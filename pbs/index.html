@@ -21,6 +21,25 @@
   <link rel="alternate" type="application/rss+xml" title="Pbssoft &raquo; Comments Feed"
     href="comments/feed/index.html" />
   <script type="text/javascript">
+    
+  var myStorage = window.localStorage;
+	  var pageCount;
+    window.addEventListener('load', function(){
+   if(!myStorage.getItem("pageCount")){
+      myStorage.setItem('pageCount', 1);
+   } else {
+      pageCount = myStorage.getItem("pageCount");
+      pageCount++;
+      myStorage.setItem('pageCount', pageCount );
+   }
+   console.log('page view count of current browsing session', myStorage.getItem("pageCount"));
+   var button = document.getElementById("siteVisitCount");
+   button.innerHTML = localStorage.getItem("pageCount");
+});
+
+
+
+
     window._wpemojiSettings = { "baseUrl": "https:\/\/s.w.org\/images\/core\/emoji\/14.0.0\/72x72\/", "ext": ".png", "svgUrl": "https:\/\/s.w.org\/images\/core\/emoji\/14.0.0\/svg\/", "svgExt": ".svg", "source": { "concatemoji": "http:\/\/www.pbssoft.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=6.2.4" } };
     /*! This file is auto-generated */
     !function (e, a, t) { var n, r, o, i = a.createElement("canvas"), p = i.getContext && i.getContext("2d"); function s(e, t) { p.clearRect(0, 0, i.width, i.height), p.fillText(e, 0, 0); e = i.toDataURL(); return p.clearRect(0, 0, i.width, i.height), p.fillText(t, 0, 0), e === i.toDataURL() } function c(e) { var t = a.createElement("script"); t.src = e, t.defer = t.type = "text/javascript", a.getElementsByTagName("head")[0].appendChild(t) } for (o = Array("flag", "emoji"), t.supports = { everything: !0, everythingExceptFlag: !0 }, r = 0; r < o.length; r++)t.supports[o[r]] = function (e) { if (p && p.fillText) switch (p.textBaseline = "top", p.font = "600 32px Arial", e) { case "flag": return s("\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f", "\ud83c\udff3\ufe0f\u200b\u26a7\ufe0f") ? !1 : !s("\ud83c\uddfa\ud83c\uddf3", "\ud83c\uddfa\u200b\ud83c\uddf3") && !s("\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f", "\ud83c\udff4\u200b\udb40\udc67\u200b\udb40\udc62\u200b\udb40\udc65\u200b\udb40\udc6e\u200b\udb40\udc67\u200b\udb40\udc7f"); case "emoji": return !s("\ud83e\udef1\ud83c\udffb\u200d\ud83e\udef2\ud83c\udfff", "\ud83e\udef1\ud83c\udffb\u200b\ud83e\udef2\ud83c\udfff") }return !1 }(o[r]), t.supports.everything = t.supports.everything && t.supports[o[r]], "flag" !== o[r] && (t.supports.everythingExceptFlag = t.supports.everythingExceptFlag && t.supports[o[r]]); t.supports.everythingExceptFlag = t.supports.everythingExceptFlag && !t.supports.flag, t.DOMReady = !1, t.readyCallback = function () { t.DOMReady = !0 }, t.supports.everything || (n = function () { t.readyCallback() }, a.addEventListener ? (a.addEventListener("DOMContentLoaded", n, !1), e.addEventListener("load", n, !1)) : (e.attachEvent("onload", n), a.attachEvent("onreadystatechange", function () { "complete" === a.readyState && t.readyCallback() })), (e = t.source || {}).concatemoji ? c(e.concatemoji) : e.wpemoji && e.twemoji && (c(e.twemoji), c(e.wpemoji))) }(window, document, window._wpemojiSettings);
@@ -1634,13 +1653,18 @@
     .modal-body {
     background-image: url('./wp-content/uploads/2023/ai.png');
     background-repeat: no-repeat;
-    background-size: cover;
     text-decoration-color: #442e66;
-    height: 400px;
+    height: 40px;
 }
 .modal-header {
   background-color: darkblue;
-  color: white;
+  color: rgb(255, 255, 255);
+}
+
+.modal-body1 {
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 25px;
 }
     .course-price {
       display: none !important;
@@ -2330,6 +2354,14 @@
                                       <a href="our-courses/index.html" class="rep-btn left-btn">All Courses</a>
                                     </div>
 
+                                    <div class="slider-btn-left">
+                                      <a href="#" data-toggle="modal" data-target="#myModal"  class="rep-btn left-btn">Benfits</a>
+                                    </div>
+                                    <div class="slider-btn-left">
+                                      <a href="#" data-toggle="modal" data-target="#myModal1"  class="rep-btn left-btn">Today Vists</a>
+
+                                    </div>
+
                                     <div class="slider-btn-right">
                                       <a href="contact/index.html" class="rep-btn right-btn">Contact Us</a>
                                     </div>
@@ -2366,7 +2398,10 @@
                                     <div class="slider-btn-left">
                                       <a href="#" data-toggle="modal" data-target="#myModal"  class="rep-btn left-btn">Benfits</a>
                                     </div>
+ <div class="slider-btn-left">
+  <a href="#" data-toggle="modal" data-target="#myModal1"  class="rep-btn left-btn">Today</a>
 
+                                    </div>
                                     <div class="slider-btn-right">
                                       <a href="contact/index.html" class="rep-btn right-btn">Contact Us</a>
                                     </div>
@@ -2393,7 +2428,6 @@
         </section>
 
         <div class="container">
-          <h2>Modal Example</h2>
           <!-- Trigger the modal with a button -->
           <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
         
@@ -2428,7 +2462,31 @@
             </div>
           </div>
         </div>
-
+        <div class="container">
+          <!-- Trigger the modal with a button -->
+          <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal1">Open Modal</button>
+          <!-- Modal -->
+          <div class="modal fade" id="myModal1" role="dialog">
+            <div class="modal-dialog">
+            
+              <!-- Modal content-->
+              <div class="modal-content1">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title" style="color: greenyellow;"><b>Today Our Site Vistors Count</b></h4>
+                </div>
+                <div class="modal-body1">
+                  <center><p style="color: orangered;" id="siteVisitCount"></p></center>
+                 
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
         <section
           class="elementor-section elementor-top-section elementor-element elementor-element-8d72f5f elementor-section-stretched elementor-section-boxed elementor-section-height-default elementor-section-height-default"
           data-id="8d72f5f" data-element_type="section"
