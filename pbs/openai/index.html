@@ -1056,17 +1056,7 @@ div#comments {
 				--qlwapp-scheme-font-family:inherit;--qlwapp-scheme-font-size:18px;--qlwapp-scheme-icon-size:60px;--qlwapp-scheme-icon-font-size:24px;--qlwapp-button-animation-name:none;				}
 			</style>
 				
-	Google Analytics code
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-264542101-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-264542101-1');
-</script>
-
+	
 </head>
 
 <body class="page-template-default page page-id-9365 wp-custom-logo wp-embed-responsive checkout courses profile become_a_teacher edubin learnpress learnpress-page has-header-image page-two-column colors-light elementor-default elementor-kit-7 elementor-page elementor-page-9365" style="background-color: #edf0f2">
@@ -1262,18 +1252,50 @@ class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-chi
 	<div class="chat-container"></div>
     
     <!-- Typing container -->
-    <div class="typing-container">
-      <div class="typing-content">
-        <div class="typing-textarea">
-          <textarea id="chat-input" spellcheck="false" placeholder="Enter a prompt here" required></textarea>
-          <span id="send-btn" class="material-symbols-rounded">send</span>
-        </div>
-        <div class="typing-controls">
-          <span id="theme-btn" class="material-symbols-rounded">dark_mode</span>
-          <span id="delete-btn" class="material-symbols-rounded">delete</span>
-      </div>
-    </div>
-</div>
+    <div id="chat-container">
+      <div id="chat-history"></div>
+      <input type="text" id="user-input" placeholder="Type a message..." />
+      <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <script>
+      const chatHistory = document.getElementById('chat-history');
+      const userInput = document.getElementById('user-input');
+
+      function sendMessage() {
+          const userMessage = userInput.value;
+          displayMessage('User', userMessage);
+
+          // Call OpenAI API to get ChatGPT response
+          fetch('https://api.openai.com/v1/engines/davinci-codex/completions', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': 'Bearer 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',
+              },
+              body: JSON.stringify({
+                  prompt: userMessage,
+                  max_tokens: 100,
+              }),
+          })
+          .then(response => response.json())
+          .then(data => {
+              const chatGptResponse = data.choices[0].text.trim();
+              displayMessage('ChatGPT', chatGptResponse);
+          })
+          .catch(error => {
+              console.error('Error calling OpenAI API:', error);
+          });
+
+          userInput.value = ''; // Clear user input
+      }
+
+      function displayMessage(sender, message) {
+          const messageElement = document.createElement('div');
+          messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
+          chatHistory.appendChild(messageElement);
+      }
+  </script>        
 </form>
 </div>
             </div>
