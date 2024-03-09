@@ -1,0 +1,92 @@
+HTTrack3.49-2+htsswf+htsjava launched on Sat, 09 Mar 2024 07:07:16 at https://www.pbssoft.com/ +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar
+
+(winhttrack -qwC2%Ps2u1%s%uN0%I0p3DaK0H0%kf2A25000%f#f -F "Mozilla/4.5 (compatible; HTTrack 3.0x; Windows 98)" -%F "<!-- %s%s by , %s -->" -%l "en, *" https://www.pbssoft.com/ -O1 "C:\My Web Sites\https___www.pbssoft.com_" +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar )
+
+
+
+Information, Warnings and Errors reported for this mirror:
+
+note:	the hts-log.txt file, and hts-cache folder, may contain sensitive information,
+
+	such as username/password authentication for websites mirrored in this project
+
+	do not share these files/folders if you want these information to remain private
+
+
+
+07:07:17	Warning: 	Temporary Redirect for https://www.pbssoft.com/robots.txt
+
+07:07:17	Warning: 	File has moved from https://www.pbssoft.com/robots.txt to https://www.pbssoft.com/
+
+07:07:39	Error: 	"Not Found" (404) at link https://www.pbssoft.com/assets/frontend/img/favicon.png (from https://www.pbssoft.com/)
+
+07:07:39	Warning: 	file not stored in cache due to bogus state (incomplete type with OK (200), size 0): https://www.pbssoft.com/assets/frontend/css/owl.video.play.html
+
+07:08:57	Warning: 	Temporary Redirect for https://www.pbssoft.com/auth/is_session/user/my_course/
+
+07:08:57	Warning: 	File has moved from https://www.pbssoft.com/auth/is_session/user/my_course/ to https://www.pbssoft.com/
+
+07:08:57	Warning: 	Temporary Redirect for https://www.pbssoft.com/auth/is_session/user/dashboard/
+
+07:08:57	Warning: 	File has moved from https://www.pbssoft.com/auth/is_session/user/dashboard/ to https://www.pbssoft.com/
+
+07:10:19	Error: 	"Not Found" (404) at link https://www.pbssoft.com/interview-questions/verify_otp/check_otp/ (from https://www.pbssoft.com/interview-questions/top-50-spring-web-mvc-interview-questions-answers-ashok-it)
+
+07:10:19	Error: 	"Not Found" (404) at link https://www.pbssoft.com/blog-post/introduction-to-data-structures/verify_otp/check_otp/ (from https://www.pbssoft.com/blog-post/introduction-to-data-structures/17)
+
+07:10:21	Error: 	"Not Found" (404) at link https://www.pbssoft.com/blog-post/Introduction_to_Data_Structures/verify_otp/check_otp/ (from https://www.pbssoft.com/blog-post/Introduction_to_Data_Structures/17)
+
+07:10:21	Error: 	"Not Found" (404) at link https://www.pbssoft.com/blog-post/introduction-to-angular/verify_otp/check_otp/ (from https://www.pbssoft.com/blog-post/introduction-to-angular/16)
+
+07:10:21	Error: 	"Not Found" (404) at link https://www.pbssoft.com/blog-post/Introduction_To_Angular/verify_otp/check_otp/ (from https://www.pbssoft.com/blog-post/Introduction_To_Angular/16)
+
+07:10:21	Error: 	"Not Found" (404) at link https://www.pbssoft.com/blog-post/what-is-devops-/verify_otp/check_otp/ (from https://www.pbssoft.com/blog-post/what-is-devops-/15)
+
+07:10:21	Error: 	"Not Found" (404) at link https://www.pbssoft.com/blog-post/What_is_DevOps/verify_otp/check_otp/ (from https://www.pbssoft.com/blog-post/What_is_DevOps/15)
+
+07:10:21	Error: 	"Not Found" (404) at link https://www.pbssoft.com/blog-post/software-testing-tutorial/verify_otp/check_otp/ (from https://www.pbssoft.com/blog-post/software-testing-tutorial/14)
+
+07:10:21	Error: 	"Not Found" (404) at link https://www.pbssoft.com/blog-post/Software_Testing_Tutorial/verify_otp/check_otp/ (from https://www.pbssoft.com/blog-post/Software_Testing_Tutorial/14)
+
+07:10:21	Error: 	"Not Found" (404) at link https://www.pbssoft.com/pbssoft-blog/verify_otp/check_otp/ (from https://www.pbssoft.com/pbssoft-blog/?page=2)
+
+07:10:28	Error: 	"Not Found" (404) at link https://www.pbssoft.com/blog-post/what-is-data-science-/verify_otp/check_otp/ (from https://www.pbssoft.com/blog-post/what-is-data-science-/13)
+
+07:10:28	Error: 	"Not Found" (404) at link https://www.pbssoft.com/blog-post/importance-of-python/verify_otp/check_otp/ (from https://www.pbssoft.com/blog-post/importance-of-python/12)
+
+07:10:28	Error: 	"Not Found" (404) at link https://www.pbssoft.com/blog/category/JAVA/verify_otp/check_otp/ (from https://www.pbssoft.com/blog/category/JAVA/8)
+
+07:10:28	Error: 	"Not Found" (404) at link https://www.pbssoft.com/blog/category/Spring_Boot/verify_otp/check_otp/ (from https://www.pbssoft.com/blog/category/Spring_Boot/9)
+
+07:10:28	Error: 	"Not Found" (404) at link https://www.pbssoft.com/blog/category/Phython/verify_otp/check_otp/ (from https://www.pbssoft.com/blog/category/Phython/11)
+
+07:10:28	Error: 	"Not Found" (404) at link https://www.pbssoft.com/blog/category/Data_science/verify_otp/check_otp/ (from https://www.pbssoft.com/blog/category/Data_science/12)
+
+07:10:28	Error: 	"Not Found" (404) at link https://www.pbssoft.com/blog/category/Software_Testing/verify_otp/check_otp/ (from https://www.pbssoft.com/blog/category/Software_Testing/13)
+
+07:10:28	Error: 	"Not Found" (404) at link https://www.pbssoft.com/blog/category/Devops/verify_otp/check_otp/ (from https://www.pbssoft.com/blog/category/Devops/14)
+
+07:10:28	Error: 	"Not Found" (404) at link https://www.pbssoft.com/blog/category/Angular/verify_otp/check_otp/ (from https://www.pbssoft.com/blog/category/Angular/15)
+
+07:10:28	Error: 	"Not Found" (404) at link https://www.pbssoft.com/blog/category/Data_Structure/verify_otp/check_otp/ (from https://www.pbssoft.com/blog/category/Data_Structure/16)
+
+07:10:28	Error: 	"Not Found" (404) at link https://www.pbssoft.com/blog/category/Power_BI/verify_otp/check_otp/ (from https://www.pbssoft.com/blog/category/Power_BI/17)
+
+07:10:32	Error: 	"Not Found" (404) at link https://www.pbssoft.com/blog-post/What_Is_Data_Science/verify_otp/check_otp/ (from https://www.pbssoft.com/blog-post/What_Is_Data_Science/13)
+
+07:10:32	Error: 	"Not Found" (404) at link https://www.pbssoft.com/blog-post/Importance_Of_Python/verify_otp/check_otp/ (from https://www.pbssoft.com/blog-post/Importance_Of_Python/12)
+
+07:10:32	Error: 	"Not Found" (404) at link https://www.pbssoft.com/blog-post/a-complete-guide-to-advanced-java/verify_otp/check_otp/ (from https://www.pbssoft.com/blog-post/a-complete-guide-to-advanced-java/11)
+
+07:10:32	Error: 	"Not Found" (404) at link https://www.pbssoft.com/blog-post/A_Complete_Guide_To_Advanced_Java/verify_otp/check_otp/ (from https://www.pbssoft.com/blog-post/A_Complete_Guide_To_Advanced_Java/11)
+
+07:10:32	Error: 	"Not Found" (404) at link https://www.pbssoft.com/blog-post/introduction-to-spring-boot-and-microservices/verify_otp/check_otp/ (from https://www.pbssoft.com/blog-post/introduction-to-spring-boot-and-microservices/10)
+
+07:10:33	Error: 	"Not Found" (404) at link https://www.pbssoft.com/blog-post/Introduction_to_Spring_boot_and_Microservices/verify_otp/check_otp/ (from https://www.pbssoft.com/blog-post/Introduction_to_Spring_boot_and_Microservices/10)
+
+
+
+/3.49-2 mirror complete in 4 minutes 57 seconds : 487 links scanned, 456 files written (78792081 bytes overall) [49328522 bytes received at 166089 bytes/sec], 42607326 bytes transferred using HTTP compression in 377 files, ratio 22%, 11.7 requests per connection
+
+(28 errors, 7 warnings, 0 messages)
+
