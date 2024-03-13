@@ -1,4 +1,5 @@
 <!doctype html>
+
 <html class="no-js" lang="en-us">
 
 
@@ -89,6 +90,28 @@ python online training, data structures algorithms online training, devops with 
     }
     gtag('js', new Date());
     gtag('config', 'G-S99H999JHW');
+
+
+
+function displayFormData() {
+  // Get form data
+  const Name = document.getElementById('full_name').value;
+  const CountryCode = document.getElementById('country_code').value;
+  const phone = document.getElementById('phone').value;
+  const Email = document.getElementById('reg_email').value;
+  // Construct the message
+  const message = `Name: ${Name}\nEmail: ${Email} \nMobile: ${CountryCode+phone}`;
+  // Display the message in an alert
+  alert(message);
+}
+
+function sendPassword(){
+  const pwd = document.getElementById('full_name').value;
+  alert("The reset password send to your email please check: "+pwd);
+
+
+}
+
   </script>
   <meta name="google-site-verification" content="dI32mYYAz0_-CaPLpaj77dfaqzalZ96l0EasJ_bdG1Q" />
   
@@ -225,7 +248,7 @@ python online training, data structures algorithms online training, devops with 
                                   <div class="col-12 text-left">
 
                                     <!--<p style="font-size: 20px;" class="ml-1">Forgot Password?</p>-->
-                                    <form action="#">
+                                    <form>
                                       <div class="fp_section mt-2">
 
                                         <div class="row mb-3">
@@ -246,7 +269,7 @@ python online training, data structures algorithms online training, devops with 
 
                                         <div class="row mb-2">
                                           <div class="col-12">
-                                            <button type="submit" id="forget_submit"
+                                            <button type="submit" id="forget_submit" onclick="sendPassword()"
                                               class="btn btn-primary top-button">Continue</button>
                                           </div>
                                         </div>
@@ -294,7 +317,7 @@ python online training, data structures algorithms online training, devops with 
 
                                   <div id="first_screen">
 
-                                    <form action="https://www.pbssoft.com/Login/save/" id="form-reg" class="form-horizontal" method="post" accept-charset="utf-8">
+                                    <form  id="form-reg" class="form-horizontal"  accept-charset="utf-8">
 
                                     <div class="form-group">
                                       <label for="full_name">Full Name</label>
@@ -605,7 +628,7 @@ python online training, data structures algorithms online training, devops with 
 
                                     <div class="reg_btn text-left">
                                       <!--<button type="submit" class="btn btn-primary top-button" onclick="first_next();">Register</button>-->
-                                      <button type="submit" name="submit"
+                                      <button type="submit" name="submit" onclick="displayFormData()"
                                         class="btn btn-success  top-button">Submit</button>
                                     </div>
 
@@ -826,7 +849,7 @@ python online training, data structures algorithms online training, devops with 
                         <div class="col-xl-4 col-lg-4 col-md-4 col-12">
                         <div class="logo">
                                  <a href="https://www.pbssoft.com/">
-                                                  <img src="uploads/settings/logo-resize.png" alt="" width="200px" >
+                                                  <img src="uploads/settings/logo-resize.png/logo-resize.png" alt="" width="200px" >
                                                  </a>
                             </div>
                         </div>
@@ -862,7 +885,7 @@ python online training, data structures algorithms online training, devops with 
             </div>-->
       <!-- /end header-top -->
 
-      <!--<script src="assets/frontend/js/flags.js"></script>-->
+      <!--<script src="https://www.pbssoft.com/assets/frontend/js/flags.js"></script>-->
       <script>
         /*
 var input = document.querySelector("#phone"),
@@ -931,7 +954,7 @@ input.addEventListener('keyup', reset);
                         <div class="col-xl-8 col-lg-8 col-md-8 col-12">
                             <div class="logo">
                                  <a href="index.html">
-                             <img data-src="uploads/settings
+                             <img data-src="uploads/settings/logo-resize.png
                                    
                                    " alt="main-logo" width="150px" height="50px"width="200px" class="lazyload" loading="lazy">
                  </a>
@@ -1376,7 +1399,7 @@ background: #FFF;
             </div>
 
            <!-- <div class="col-md-10 col-lg-4 d-lg-block d-md-none d-none wow fadeInRight text-lg-left text-md-center text-center" style="visibility: visible; animation-name: fadeInRight;">
-                <img src="assets/frontend/images/who.png" class="img-fluid" alt="">
+                <img src="https://www.pbssoft.com/assets/frontend/images/who.png" class="img-fluid" alt="">
             </div>-->
 
         </div>
@@ -1518,7 +1541,7 @@ background: #FFF;
     </div>
     <div class="col-md-6 col-lg-6">
         <div class="why_we_choose_image text-center">
-            <img src="assets/frontend/images/why_choose_us.png" class="img-fluid" >
+            <img src="https://www.pbssoft.com/assets/frontend/images/why_choose_us.png" class="img-fluid" >
         </div>
     </div>
     </div>
@@ -2290,39 +2313,40 @@ window.onmousedown = function (e) {
                   
       <script type="text/javascript">  
         // Ajax post  
-        $(document).ready(function(){  
-        $("#forget_submit").click(function(){  
-        var email_forgot = $("#email_forgot").val();  
-        // Returns error message when submitted without req fields.  
-        if(email_forgot=='')  
-        {  
-        jQuery("div#err_forget_msg").show();  
-        jQuery("div#forget_msg").html("The Email field is required.");
-          $('#email').css('border', '1px solid red');
-        }  
-        else  
-        {  
-        // AJAX Code To Submit Form.  
-        $.ajax({  
-        type: "POST",  
-        url:  "https://www.pbssoft.com/" + "login/check_forget",  
-        data: {email_forgot: email_forgot},  
-        cache: false,  
-        success: function(result){  
-            if(result!=2){  
-                // On success redirect.
-              //window.location = 'https://pbssoftit.com/verify_otp/';
-             window.location.replace(result);  
-            }  
-            else  
-                jQuery("div#err_forget_msg").show();  
-                jQuery("div#forget_msg").html("No account found with that email");  
-        }  
-        });  
-        }  
-        return false;  
-        });  
-        });  
+        // $(document).ready(function(){  
+        // $("#forget_submit").click(function(){  
+        // var email_forgot = $("#email_forgot").val();  
+        // // Returns error message when submitted without req fields.  
+        // if(email_forgot=='')  
+        // {  
+        // jQuery("div#err_forget_msg").show();  
+        // jQuery("div#forget_msg").html("The Email field is required.");
+        //   $('#email').css('border', '1px solid red');
+        // }  
+        // else  
+        // {  
+        // // AJAX Code To Submit Form.  
+        // $.ajax({  
+        // type: "POST",  
+        // url:  "https://www.pbssoft.com/" + "login/check_forget",  
+        // data: {email_forgot: email_forgot},  
+        // cache: false,  
+        // success: function(result){  
+        //     if(result!=2){  
+        //         // On success redirect.
+        //       //window.location = 'https://pbssoftit.com/verify_otp/';
+        //      window.location.replace(result);  
+        //     }  
+        //     else  
+        //         jQuery("div#err_forget_msg").show();  
+        //         jQuery("div#forget_msg").html("No account found with that email");  
+        // }  
+        // });  
+        // }  
+        // return false;  
+        // });  
+        // });  
+        
         </script> 
                   
                   
