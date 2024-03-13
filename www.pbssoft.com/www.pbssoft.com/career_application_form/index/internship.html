@@ -89,6 +89,29 @@ python online training, data structures algorithms online training, devops with 
     }
     gtag('js', new Date());
     gtag('config', 'G-S99H999JHW');
+function applyJob(){
+ // Get form data
+ const  name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const phone = document.getElementById('phone').value;
+  const qualification = document.getElementById('qualification').value;
+  const dropdown = document.getElementById("role");
+  
+  // Get the selected option
+  const selectedOption = dropdown.options[dropdown.selectedIndex];
+  
+  // Get the value and text of the selected option
+  const selectedValue = selectedOption.value;
+  const selectedText = selectedOption.textContent;
+  alert(selectedText)
+  const role = document.getElementById('role').value;
+  // Construct the message
+  const message = `Name: ${name}\nEmail: ${email} \nMobile: ${phone}\n Qualification :${qualification}\n Role: ${role}`;
+  // Display the message in an alert
+  alert(message);
+}
+
+
 function displayFormData() {
   // Get form data
   const Name = document.getElementById('full_name').value;
@@ -952,7 +975,7 @@ input.addEventListener('keyup', reset);
                         <div class="col-xl-8 col-lg-8 col-md-8 col-12">
                             <div class="logo">
                                  <a href="../../index.html">
-                                   <img src="uploads/settings/logo-resize.png " alt="main-logo" width="150px" height="50px"width="200px" class="lazyload" loading="lazy">
+                                   <img src="../../uploads/settings/logo-resize.png" alt="main-logo" width="150px" height="50px"width="200px" class="lazyload" loading="lazy">
                  </a>
             </div>
         </div>
@@ -1390,9 +1413,13 @@ background: #FFF;
                   <div class="col-md-6">
                     <div class="form-group">
 						<label>Select Positions<span class="imp">*</span></label>
-						<select name="position" id="role" class="form-control ">
+						<select name="position" id="role" name ="role" class="form-control "  onclick="applyJob();">
 
-                        <option value=""></option>
+                        <option value="Java Developer">Java Developer</option>
+                        <option value="Web Developer">Web Developer</option>
+                        <option value="Devops Engineer">Devops Engineer</option>
+                        <option value="Automation Tester">Automation Tester</option>
+
                                     </select>
                     </div>
                    </div>
@@ -1413,7 +1440,7 @@ background: #FFF;
                    </div>
                    <div class="col-md-12">
 
-                      <button type="submit" name="submit" value="td_resume" class="btn btn-primary top-button">
+                      <button type="submit" name="submit"  onclick="applyJob();" td_resume" class="btn btn-primary top-button">
 
 submit
 

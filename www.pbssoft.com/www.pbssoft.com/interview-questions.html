@@ -104,9 +104,21 @@ function displayFormData() {
 function sendPassword(){
   const pwd = document.getElementById('full_name').value;
   alert("The reset password send to your email please check: "+pwd);
+}  
+
+function register(){
+
+  const Name = document.getElementById('first_name').value;
+  const message1 = document.getElementById('message').value;
+  const phone = document.getElementById('number').value;
+  const Email = document.getElementById('email_id').value;
+  const message = `Name: ${Name}\nEmail: ${Email} \nMobile: ${phone}\n Message : ${message1}`;
+  alert(message);
+
+}
 
 
-}  </script>
+</script>
   <meta name="google-site-verification" content="dI32mYYAz0_-CaPLpaj77dfaqzalZ96l0EasJ_bdG1Q" />
   
   </head>
@@ -1493,7 +1505,7 @@ background: #FFF;
     <h6 style="font-weight: 600 !important;margin-top: 21px !important; margin-bottom: 23px !important;text-align: center !important;color: #002147; !important">Register for course!</h6>
 
     <div id="the-message"></div>
-            <form action="https://www.pbssoft.com/interview_quns/save/" id="form-contact" class="form-horizontal" method="post" accept-charset="utf-8">
+            <form  id="form-contact" class="form-horizontal"  accept-charset="utf-8">
 
         <div class="form-group">
 
@@ -1621,7 +1633,7 @@ background: #FFF;
 
         <div class="form-group">
 
-           <input type="submit" class="btn btn-secondary" value="Register">
+           <input type="submit" onclick="register();" class="btn btn-secondary" value="Register" >
 
         </div>
  
@@ -1726,16 +1738,7 @@ element.after(value);
 });
 
 </script>
-<script>
-    const formcontrol = document.querySelector("#phone");
-    const phoneInput = window.intlTelInput(formcontrol, {
-      utilsScript:
-        "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-    });
 
- 
-
-  </script>
 <script>
 
 $(document).ready(function() {

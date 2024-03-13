@@ -105,8 +105,22 @@ function sendPassword(){
   const pwd = document.getElementById('full_name').value;
   alert("The reset password send to your email please check: "+pwd);
 
+}  
+function sendMessage(){
+  const Name = document.getElementById('name').value;
+  const country_code = document.getElementById('country_code').value;
+  const phone = document.getElementById('phone_no').value;
+  const Email = document.getElementById('email_id').value;
+  // Construct the message
+  const message = `Name: ${Name}\nEmail: ${Email} \nMobile: ${country_code+phone}\n We received your deatils will connect you soon..`;
+  // Display the message in an alert
+  alert(message);
 
-}  </script>
+}
+
+
+
+</script>
   <meta name="google-site-verification" content="dI32mYYAz0_-CaPLpaj77dfaqzalZ96l0EasJ_bdG1Q" />
   
   </head>
@@ -1760,7 +1774,7 @@ background: #FFF;
 
                             <div class="row">
                                 <div class="col-12">
-                                    <input type="submit" value="Send Message" class="btn btn-primary top-button">
+                                    <input type="submit" value="Send Message"  onclick="sendMessage();"  class="btn btn-primary top-button">
 
                                 </div><br><br>
 
