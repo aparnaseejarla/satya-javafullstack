@@ -93,7 +93,17 @@
     }
     gtag('js', new Date());
     gtag('config', 'G-S99H999JHW');
-  </script>
+function displayFormData() {
+  // Get form data
+  const Name = document.getElementById('full_name').value;
+  const CountryCode = document.getElementById('country_code').value;
+  const phone = document.getElementById('phone').value;
+  const Email = document.getElementById('reg_email').value;
+  // Construct the message
+  const message = `Name: ${Name}\nEmail: ${Email} \nMobile: ${CountryCode+phone}`;
+  // Display the message in an alert
+  alert(message);
+}  </script>
   <meta name="google-site-verification" content="dI32mYYAz0_-CaPLpaj77dfaqzalZ96l0EasJ_bdG1Q" />
   
     <script type="application/ld+json">{
