@@ -98,6 +98,13 @@ function displayFormData() {
   const message = `Name: ${Name}\nEmail: ${Email} \nMobile: ${CountryCode+phone}`;
   // Display the message in an alert
   alert(message);
+}
+
+function sendPassword(){
+  const pwd = document.getElementById('full_name').value;
+  alert("The reset password send to your email please check: "+pwd);
+
+
 }  </script>
   <meta name="google-site-verification" content="dI32mYYAz0_-CaPLpaj77dfaqzalZ96l0EasJ_bdG1Q" />
   
@@ -253,11 +260,13 @@ function displayFormData() {
                                           </div>
                                         </div>
 
-                                        <div class="row mb-2">
+                                         <div class="row mb-2">
                                           <div class="col-12">
-                                            <button type="submit" id="forget_submit"
+                                            <button type="submit" id="forget_submit" onclick="sendPassword()"
                                               class="btn btn-primary top-button">Continue</button>
                                           </div>
+                                        </div>
+                                         
                                         </div>
                                         <p>Already have an account? <a href="#login_screen" class="px-2"
                                             style="font-size: 14px !important;padding: 5px;font-weight:400;color:#ec2025;text-decoration:underline"
