@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+
+<!-- Mirrored from tomgregory.com/gradle/how-to-measure-code-coverage-using-sonarqube-and-jacoco/ by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 14 Mar 2024 02:06:17 GMT -->
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>How to Measure Code Coverage Using SonarQube and Jacoco | Gradle Hero</title>
+<meta name="keywords" content="testing, java, jacoco, sonarqube">
+<meta name="description" content="Code coverage is a metric that teams use to measure the quality of their tests, and it represents the percentage of production code that has been tested. Discover how to apply the Gradle Jacoco plugin to your project and run a SonarQube scan to generate a code coverage report.
+UPDATED in November 2021 to reflect SonarQube LTS version switching to 8.9.
+1. Overview SonarQube is a tool which aims to improve the quality of your code using static analysis techniques to report:">
+<meta name="author" content="Tom Gregory">
+<link rel="canonical" href="index.html">
+<link crossorigin="anonymous" href="../assets/css/stylesheet.1a8a7bcbf64338b678f070de3d0e3626aea70a333dc69d06f100e0f5cd80442a.css" integrity="sha256-Gop7y/ZDOLZ48HDePQ42Jq6nCjM9xp0G8QDg9c2ARCo=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://tomgregory.com/gradle/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.html">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.html">
+<link rel="mask-icon" href="https://tomgregory.com/gradle/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript><script src="../js/jquery-3.6.4.min.js"></script>
+<script src="../js/tabs.js"></script>
+<script src="../js/fontawesome-all.min.js"></script>
+<script src="../../../cdn.jsdelivr.net/npm/quizdown%40latest/public/build/quizdown.js">
+</script>
+<script src="../../../cdn.jsdelivr.net/npm/quizdown%40latest/public/build/extensions/quizdownHighlight.js">
+</script>
+<script>quizdown.register(quizdownHighlight).init()</script>
+<script type="module" defer src="../assets/index-bb1ce51d.js" /></script>
+
+<link rel="stylesheet" href="../assets/index-402ab35b.css">
+
+
+<script>
+    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
+    .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+    n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+    (window,document,'script','../../../assets.mailerlite.com/js/universal.js','ml');
+    ml('account', '207057');
+</script>
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0XLSLZ58WN"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-0XLSLZ58WN', { 'anonymize_ip': false });
+}
+</script>
+
+
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    '../../../www.googletagmanager.com/gtm5445.html?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-KDKXDKJ');</script>
+    <meta property="og:title" content="How to Measure Code Coverage Using SonarQube and Jacoco" />
+<meta property="og:description" content="Code coverage is a metric that teams use to measure the quality of their tests, and it represents the percentage of production code that has been tested. Discover how to apply the Gradle Jacoco plugin to your project and run a SonarQube scan to generate a code coverage report.
+UPDATED in November 2021 to reflect SonarQube LTS version switching to 8.9.
+1. Overview SonarQube is a tool which aims to improve the quality of your code using static analysis techniques to report:" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-12-13T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-12-13T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="How to Measure Code Coverage Using SonarQube and Jacoco"/>
+<meta name="twitter:description" content="Code coverage is a metric that teams use to measure the quality of their tests, and it represents the percentage of production code that has been tested. Discover how to apply the Gradle Jacoco plugin to your project and run a SonarQube scan to generate a code coverage report.
+UPDATED in November 2021 to reflect SonarQube LTS version switching to 8.9.
+1. Overview SonarQube is a tool which aims to improve the quality of your code using static analysis techniques to report:"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://tomgregory.com/gradle/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "How to Measure Code Coverage Using SonarQube and Jacoco",
+      "item": "https://tomgregory.com/gradle/how-to-measure-code-coverage-using-sonarqube-and-jacoco/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "How to Measure Code Coverage Using SonarQube and Jacoco",
+  "name": "How to Measure Code Coverage Using SonarQube and Jacoco",
+  "description": "Code coverage is a metric that teams use to measure the quality of their tests, and it represents the percentage of production code that has been tested. Discover how to apply the Gradle Jacoco plugin to your project and run a SonarQube scan to generate a code coverage report.\nUPDATED in November 2021 to reflect SonarQube LTS version switching to 8.9.\n1. Overview SonarQube is a tool which aims to improve the quality of your code using static analysis techniques to report:",
+  "keywords": [
+    "testing", "java", "jacoco", "sonarqube"
+  ],
+  "wordCount" : "1365",
+  "inLanguage": "en",
+  "dateModified": "2019-12-13T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Tom Gregory"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://tomgregory.com/gradle/how-to-measure-code-coverage-using-sonarqube-and-jacoco/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Gradle Hero",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://tomgregory.com/gradle/favicon.ico"
+    }
+  }
+}
+</script>
+<h1>SonarQube and Jacoco Basics</h1>
+</head>
+
+<body class="" id="top">
+
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KDKXDKJ"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <header>
+    <nav class="flex flex-wrap justify-between max-w-screen-xl mx-auto min-h-24 py-2 gap-4 box-border items-center">
+        <div class="mx-3 mr-auto">
+            <a href="https://tomgregory.com/gradle/" accesskey="h" title="  (Alt + H)">
+                <img src="../images/" alt="" aria-label="logo"
+                    height="30"> </a>
+        </div>
+       
+        
+    </nav>
+</header>
+<main class="main">
+
+<style>
+:root {
+  --main-width: 1000px;
+}
+</style>
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      How to Measure Code Coverage Using SonarQube and Jacoco
+    </h1>
+
+</div>
+  </header> 
+
+  <div class="post-content"><p>Code coverage is a metric that teams use to measure the quality of their tests, and it represents the percentage of production code that has been tested. <strong>Discover how to apply the Gradle Jacoco plugin to your project and run a SonarQube scan to generate a code coverage report.</strong></p>
+<p>UPDATED in November 2021 to reflect SonarQube LTS version switching to 8.9.</p>
+<h2 id="1-overview">1. Overview<a hidden class="anchor" aria-hidden="true" href="#1-overview">#</a></h2>
+<p><a href="https://www.sonarqube.org/">SonarQube</a> is a tool which aims to improve the quality of your code using static analysis techniques to report:</p>
+<ul>
+<li>code coverage</li>
+<li>bugs</li>
+<li>code smells</li>
+<li>security vulnerabilities</li>
+</ul>
+<p>The <em><strong>SonarQube server</strong></em> is a standalone service which allows you to browse reports from all the different projects which have been scanned. To scan a specific codebase you run the <em><strong>SonarQube scanner</strong></em>. This is a local process that analyses your code then sends reports to the SonarQube server.</p>
+<p><img loading="lazy" src="images/image.png" alt=""  />
+</p>
+<h3 id="code-coverage">Code coverage<a hidden class="anchor" aria-hidden="true" href="#code-coverage">#</a></h3>
+<p>The code coverage metric has to be computed outside of SonarQube using a different tool. The result is then ingested into SonarQube and shown within its web interface.</p>
+<p>The tool we&rsquo;ll look at today to calculate code coverage for a Java project is called <a href="https://www.eclemma.org/jacoco/"><em>Jacoco</em></a>. Jacoco analyses the code and generates an XML report, which is later ingested by SonarQube.</p>
+<h2 id="2-a-worked-example">2. A worked example<a hidden class="anchor" aria-hidden="true" href="#2-a-worked-example">#</a></h2>
+<p>Let&rsquo;s run through an example of exactly how Jacoco and SonarQube work together to calculate code coverage. To do this we&rsquo;ll use the <a href="https://github.com/tkgregory/sonarqube-jacoco-code-coverage"><em>sonarqube-jacoco-code-coverage</em> GitHub project</a>, which you can clone to see it working with your own eyes.</p>
+<p>We&rsquo;ll set up:</p>
+<ol>
+<li>an instance of SonarQube running in Docker</li>
+<li>a Java project with a class and some unit tests</li>
+<li>a Gradle build which generates a Jacoco code coverage report then runs the SonarQube scanner against the Java project</li>
+</ol>
+<p><img loading="lazy" src="images/image.png" alt=""  />
+</p>
+
+<aside class="note">
+	<h4 id="%fa-inline-fas-fa-pencil-alt-note">
+		
+		<span class="pr-2">
+    <i class="fas fa-pencil-alt "></i>
+</span> NOTE
+		
+	</h4>
+	<div><p>Gradle is a popular build tool for building Java applications. It can also generate a Jacoco code coverage report <em>and</em> run the SonarQube scanner, as you&rsquo;ll see later in the article. Learn more with this <a href="https://tomgregory.com/gradle/gradle-tutorial-for-complete-beginners/">beginner tutorial</a>.</p>
+</div>
+</aside>
+<p>The project has 2 classes:</p>
+<ol>
+<li>
+<p>A <code>MathService</code> class which has 2 methods, <code>multiply</code> and <code>subtract</code></p>
+</li>
+<li>
+<p>A <code>MathServiceTest</code> class which only tests 1 out of the 2 methods in <code>MathService</code></p>
+</li>
+</ol>
+<p><img loading="lazy" src="images/image.png" alt=""  />
+</p>
+<p>So we&rsquo;re hoping that SonarQube will highlight the fact that we&rsquo;re missing a test here i.e. only one of the methods in <code>MathService</code> has been tested. Any guesses for what percentage code coverage SonarQube will report in this case? 🤔</p>
+
+<aside class="note">
+	<h4 id="%fa-inline-fas-fa-pencil-alt-note">
+		
+		<span class="pr-2">
+    <i class="fas fa-pencil-alt "></i>
+</span> NOTE
+		
+	</h4>
+	<div><p>To follow along with this example, you&rsquo;ll need installed locally both Docker and Java 8+. It&rsquo;s been tested with Java 8, 11, and 17.</p>
+</div>
+</aside>
+<h2 id="3-setting-up-a-sonarqube-instance">3. Setting up a SonarQube instance<a hidden class="anchor" aria-hidden="true" href="#3-setting-up-a-sonarqube-instance">#</a></h2>
+<p>An official <a href="https://hub.docker.com/_/sonarqube">Docker image</a> exists for SonarQube, making this really easy to get up and running using Docker Compose. Just add the following <em>docker-compose.yml</em> file to your project:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">version</span>: <span style="color:#e6db74">&#34;3&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">services</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">sonarqube</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">sonarqube:lts</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">9000</span>:<span style="color:#ae81ff">9000</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">environment</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">SONAR\_FORCEAUTHENTICATION=false</span>
+</span></span></code></pre></div><ul>
+<li>uses the <em>lts</em> (long term support) version of the SonarQube Docker image, which is currently SonarQube version 8.9.</li>
+<li>SonarQube is configured to start on port 9000</li>
+<li>SonarQube authentication is disabled to simplify this demo. Always use authentication in a production environment.</li>
+</ul>
+<p>To run Docker Compose from Gradle, just add this plugin to your <em>build.gradle</em>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-gradle" data-lang="gradle"><span style="display:flex;"><span>plugins <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    id <span style="color:#e6db74">&#39;com.avast.gradle.docker-compose&#39;</span> version <span style="color:#e6db74">&#39;0.14.3&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// any other plugins
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+</span></span></code></pre></div>
+<aside class="note">
+	<h4 id="%fa-inline-fas-fa-pencil-alt-note">
+		
+		<span class="pr-2">
+    <i class="fas fa-pencil-alt "></i>
+</span> NOTE
+		
+	</h4>
+	<div><p>If you&rsquo;re following along with the example <a href="https://github.com/tkgregory/sonarqube-jacoco-code-coverage">GitHub repository</a> rather than applying this to your own project, the previous and following steps are already configured for you.</p>
+</div>
+</aside>
+<p>Now we can run <code>./gradlew composeUp</code> to start the SonarQube Docker container through Gradle:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-gradle" data-lang="gradle"><span style="display:flex;"><span>$ <span style="color:#f92672">./</span>gradlew composeUp
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;</span> Task <span style="color:#f92672">:</span>composeUp
+</span></span><span style="display:flex;"><span>sonarqube uses an image<span style="color:#f92672">,</span> skipping
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>BUILD SUCCESSFUL <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">19</span>s
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span> actionable task: <span style="color:#ae81ff">1</span> executed
+</span></span></code></pre></div><p>That was successful, but we can double check everything is OK by seeing what Docker containers are running with <code>docker ps</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>$ docker ps
+</span></span><span style="display:flex;"><span>CONTAINER ID   IMAGE           COMMAND          CREATED              STATUS              PORTS                                       NAMES
+</span></span><span style="display:flex;"><span>35459fcff334   sonarqube:lts   &#34;./bin/run.sh&#34;   About a minute ago   Up About a minute   0.0.0.0:9000-&gt;9000/tcp, :::9000-&gt;9000/tcp   39b4a0caef82cbb00dd981c87ae00
+</span></span><span style="display:flex;"><span>c20\_sonarqube-jacoco-code-coverage\_\_sonarqube\_1
+</span></span></code></pre></div><p>This shows that SonarQube is running on <a href="http://localhost:9000/">localhost:9000</a>. It might take a minute for SonarQube to start up, but eventually within a browser you&rsquo;ll be able to reach the main SonarQube dashboard.</p>
+<p><img loading="lazy" src="images/sonarqube-home-page-1024x576.png" alt=""  />
+</p>
+<p>This is correctly reporting we currently have 0 projects analysed. Let&rsquo;s fix that! 👌</p>
+<h2 id="4-using-the-jacoco-gradle-plugin">4. Using the Jacoco Gradle plugin<a hidden class="anchor" aria-hidden="true" href="#4-using-the-jacoco-gradle-plugin">#</a></h2>
+<p>Before we get onto actually scanning our code with SonarQube, let&rsquo;s set up the <a href="https://docs.gradle.org/current/userguide/jacoco_plugin.html">Jacoco Gradle plugin</a>. This will generate the test coverage statistics for our Java code. Just add the following plugin definition and configuration to <em>build.gradle</em>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-gradle" data-lang="gradle"><span style="display:flex;"><span>plugins <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    id <span style="color:#e6db74">&#39;jacoco&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// any other plugins
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>jacocoTestReport <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    reports <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        xml<span style="color:#f92672">.</span><span style="color:#a6e22e">enabled</span> <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>test<span style="color:#f92672">.</span><span style="color:#a6e22e">finalizedBy</span> jacocoTestReport
+</span></span></code></pre></div><ul>
+<li>we apply the <em>jacoco</em> plugin, a core Gradle plugin</li>
+<li>we configure the plugin to output test reports in the XML format required by SonarQube</li>
+<li>we use <code>finalizedBy</code> to ensure that the test report is always generated after tests are run</li>
+</ul>
+<p>Now let&rsquo;s run <code>./gradlew test</code>. Notice we have a new file <em>reports/jacoco/test/jacocoTestReport.xml</em> created in the build directory.</p>
+<p><img loading="lazy" src="images/jacoco-xml-test-report-1.png" alt="Jacoco XML report file location"  />
+</p>
+<p>This contains the code coverage information that SonarQube will pick up during its scan.</p>
+<h2 id="5-using-the-sonarqube-gradle-plugin">5. Using the SonarQube Gradle plugin<a hidden class="anchor" aria-hidden="true" href="#5-using-the-sonarqube-gradle-plugin">#</a></h2>
+<p>Now that we&rsquo;ve got our test code coverage data being generated by Jacoco, it&rsquo;s time to hook all this up by running a SonarQube scan. This will report on the code coverage as well as run a full scan of our code. To do this we&rsquo;ll use the <a href="https://plugins.gradle.org/plugin/org.sonarqube">SonarQube Gradle plugin</a> which adds the <em>sonarqube</em> task to our build.</p>
+<p>We can include it in our <em>build.gradle</em> like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-gradle" data-lang="gradle"><span style="display:flex;"><span>plugins <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    id <span style="color:#e6db74">&#39;org.sonarqube&#39;</span> version <span style="color:#e6db74">&#39;3.3&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// any other plugins
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>We also need to include a configuration to tell the SonarQube scanner where to find the SonarQube server:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-gradle" data-lang="gradle"><span style="display:flex;"><span>sonarqube <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    properties <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        property <span style="color:#e6db74">&#39;sonar.host.url&#39;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#39;http://localhost:9000&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>Lastly, to ensure the Jacoco test report is always created when we run the <em>sonarqube</em> task let&rsquo;s setup the following <code>dependsOn</code> relationship:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-gradle" data-lang="gradle"><span style="display:flex;"><span>tasks<span style="color:#f92672">.</span><span style="color:#a6e22e">named</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#39;sonarqube&#39;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">configure</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    dependsOn test
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>Now we just need to run the <em>sonarqube</em> Gradle task to run a scan, with <code>./gradlew sonarqube</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>$ ./gradlew sonarqube
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Deprecated Gradle features were used in this build, making it incompatible with Gradle 8.0.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>You can use &#39;--warning-mode all&#39; to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>See https://docs.gradle.org/7.2/userguide/command\_line\_interface.html#sec:command\_line\_warnings
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>BUILD SUCCESSFUL in 10s
+</span></span><span style="display:flex;"><span>5 actionable tasks: 1 executed, 4 up-to-date
+</span></span></code></pre></div><p>Success!</p>
+<h2 id="6-viewing-the-sonarqube-report-details">6. Viewing the SonarQube report details<a hidden class="anchor" aria-hidden="true" href="#6-viewing-the-sonarqube-report-details">#</a></h2>
+<p>We can head back to SonarQube at <a href="http://localhost:9000/projects">localhost:9000/projects</a> to see the test code coverage report.</p>
+<p><img loading="lazy" src="images/sonarqube-analysis-home-page-1024x576.png" alt=""  />
+</p>
+<p>We can see a reported code coverage of 66.7%. Awesome! Click on the <em>sonarqube-jacoco-code-coverage</em> link and we&rsquo;ll try to drill into exactly how this was calculated.</p>
+<p><img loading="lazy" src="images/sonarqube-analysis-project-overview-1024x576.png" alt=""  />
+</p>
+<p>This is a more detailed view of the report. Click on the <em>66.7%</em> link.</p>
+<p><img loading="lazy" src="images/sonarqube-class-analysis-overview-1024x576.png" alt=""  />
+</p>
+<p>We now see information about what class has been analysed, in this case the <code>MathService</code>. Click on the link to see even more details:</p>
+<p><img loading="lazy" src="images/sonarqube-analysis-class-details-1024x576.png" alt=""  />
+</p>
+<p>We can now see the class itself, where green highlights code that is properly tested and red code that isn&rsquo;t. Let&rsquo;s zoom in a bit:</p>
+<p><img loading="lazy" src="images/sonarqube-analysis-class-zoomed-1024x548.png" alt=""  />
+</p>
+<p>We can see that SonarQube is telling us that:</p>
+<ul>
+<li>
+<p>the class <code>MathService</code> is covered by tests (green mark)</p>
+</li>
+<li>
+<p>the multiply method is covered by tests (green mark)</p>
+</li>
+<li>
+<p>the subtract method is not covered by tests (red mark)</p>
+</li>
+</ul>
+<p>That makes 2 out of 3, hence the 66.7% being reported by SonarQube. So there&rsquo;s definitely room for improvement!</p>
+<h2 id="7-sonarqube-9">7. SonarQube 9<a hidden class="anchor" aria-hidden="true" href="#7-sonarqube-9">#</a></h2>
+<p>The above example uses the LTS version of SonarQube, currently 8.9. The same steps can be used to run against SonarQube 9.</p>
+<p>You can view the SonarQube version at the bottom of any page on the web UI.</p>
+<p><img loading="lazy" src="images/sonarqube-version-1024x82.png" alt=""  />
+</p>
+<h2 id="8-conclusion">8. Conclusion<a hidden class="anchor" aria-hidden="true" href="#8-conclusion">#</a></h2>
+<p>You&rsquo;ve seen that it&rsquo;s really easy to setup code coverage reporting in a Gradle project using Jacoco and SonarQube. Try it out on your own project to see how you measure up.</p>
+<p>Note that this isn&rsquo;t the only metric you should use to measure your test quality, but it can be a helpful indicator. Code may have a high code coverage percentage, but it might be brittle and difficult to maintain.</p>
+<p>Do you want to include coverage data from integration tests? Find out how in <em><a href="https://tomgregory.com/gradle/integration-test-code-coverage-with-sonarqube-and-jacoco/">Integration Test Code Coverage with SonarQube and Jacoco</a></em>.</p>
+<h2 id="9-resources">9. Resources<a hidden class="anchor" aria-hidden="true" href="#9-resources">#</a></h2>
+<p><strong>GITHUB REPOSITORY</strong>
+Follow along with this article by checking out the accompanying <a href="https://github.com/tkgregory/sonarqube-jacoco-code-coverage">GitHub repository</a>. This uses the LTS version of SonarQube (currently version 8.9).</p>
+<p><strong>SONARQUBE</strong>
+<a href="https://docs.sonarqube.org/latest/">General documentation</a></p>
+<p><strong>GRADLE</strong></p>
+<ul>
+<li>Jacoco Plugin <a href="https://docs.gradle.org/current/userguide/jacoco_plugin.html">docs</a></li>
+<li>SonarQube Plugin <a href="https://docs.sonarqube.org/latest/analysis/scan/sonarscanner-for-gradle/">docs</a></li>
+<li><a href="https://tomgregory.com/gradle/gradle-tutorial-for-complete-beginners/">Gradle tutorial for complete beginners</a></li>
+</ul>
+
+
+
+    <div class="post-ad">
+      <a href="https://tomgregory.com/gradle/courses/get-going-with-gradle/">
+      </a>
+    </div>
+  </div>
+
+  <footer class="post-footer">
+
+
+
+
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+        </svg>
+    </a>
+</div>
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gradlehero" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+</a><footer class="footer">
+    <div id="report-problem" class="mb-4"></div>
+   
+   
+</footer>
+
+<div id="signin-form"></div>
+<div id="free-course-sign-up-form"></div>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+</body>
+
+
+<!-- Mirrored from tomgregory.com/gradle/how-to-measure-code-coverage-using-sonarqube-and-jacoco/ by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 14 Mar 2024 02:06:31 GMT -->
+</html>
