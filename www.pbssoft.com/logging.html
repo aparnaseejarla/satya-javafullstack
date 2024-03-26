@@ -1,0 +1,938 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="max-snippet:-1,max-image-preview:large,max-video-preview:-1">
+
+    <link rel="shortcut icon" href="/images/favicon-b5574bf7.ico">
+
+
+
+    <meta name="description" content="You can use this guide to discover, understand and use the right Java logging library for your applications, like Log4j2, Logback, or java.util.logging."/>
+
+    <meta property="og:title" content="How To Do Logging In Java"/>
+    
+    <meta property="og:type" content="article"/>
+    <meta property="og:description" content="You can use this guide to discover, understand and use the right Java logging library for your applications, like Log4j2, Logback, or java.util.logging."/>
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:creator" content="Marco Behler"/>
+    <meta name="twitter:site" content="@MarcoBehler"/>
+    <meta name="twitter:title" content="How To Do Logging In Java"/>
+    
+    <meta name="twitter:description" content="You can use this guide to discover, understand and use the right Java logging library for your applications, like Log4j2, Logback, or java.util.logging."/>
+
+    
+    <title>How To Do Logging In Java</title>
+
+  
+    
+
+</head>
+
+<body>
+   
+
+    <main>
+        
+   
+
+        <div class="row">
+            <div class="col-md-2">
+
+                <div class="sticky-top">
+                    <nav>
+                        <div class="list-group pt-0 mb-2 smaller" id="article-toc">
+
+                            <h6 class="sidebar-heading mb-1 mt-3">
+                                <span>Quick Links</span>
+                            </h6>
+
+                            <ul class="nav flex-column">
+                                <li class="nav-item"><a class="nav-link py-1"
+                                                                                       href="#_introduction">Introduction</a>
+                                </li>
+                                <li class="nav-item"><a class="nav-link py-1"
+                                                                                       href="#_legacy_logging_libraries">Legacy Logging Libraries</a>
+                                </li>
+                                <li class="nav-item"><a class="nav-link py-1"
+                                                                                       href="#_modern_logging_libraries">Modern Logging Libraries</a>
+                                </li>
+                                <li class="nav-item"><a class="nav-link py-1"
+                                                                                       href="#_how_to_log">How to log</a>
+                                </li>
+                                <li class="nav-item"><a class="nav-link py-1"
+                                                                                       href="#_centralized_logging">Centralized Logging</a>
+                                </li>
+                                <li class="nav-item"><a class="nav-link py-1"
+                                                                                       href="#_deciding_on_the_right_way_to_log">Deciding On The Right (™) Way To Log</a>
+                                </li>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </nav>
+                </div>
+
+            </div>
+            <div class="col-md-8">
+                <p>You can use this guide to discover, understand and use the right Java logging library for your applications, like Log4j2, Logback, or java.util.logging.</p>
+                <p>Logging &#39;seems&#39; like a very simple topic, but can be rather tricky in practice and is not covered anywhere in sufficient detail. Read this guide to fully make sense of the Java logging landscape.</p>
+
+                <div class="sect1">
+<h2 id="_introduction">Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Sooner or later, every Java application needs logging.</p>
+</div>
+<div class="paragraph">
+<p>It could be that you simply want to log your system&#8217;s state or user actions to a file, so your operations staff has a way of knowing what&#8217;s happening.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"Application successfully started on port 8080"</span><span class="o">);</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It could be that you need to record error messages whenever an exception happens and then send an e-mail or text message to a human for urgent intervention.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="n">logger</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">"Database connection is down"</span><span class="o">,</span> <span class="n">exception</span><span class="o">);</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or one of your batch jobs might want to record and send warnings to a central, GUI-based log server, whenever it fails to import some records of a csv file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="n">logger</span><span class="o">.</span><span class="na">warn</span><span class="o">(</span><span class="s">"Invalid bank account number for record=[{}]"</span><span class="o">,</span> <span class="mi">53</span><span class="o">);</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>No matter what you want to do, you&#8217;ll need to make sure to have an appropriate logging library and then configure and use it correctly.</p>
+</div>
+<div class="paragraph">
+<p>Unfortunately, the Java universe has a plethora of logging libraries available and a developer should have a rough understanding of why there are that many options and when to use which option.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s find out.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_legacy_logging_libraries">Legacy Logging Libraries</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To understand recent developments with Java&#8217;s logging libraries, it makes sense to meet &amp; understand the dinosaurs - Java&#8217;s oldest logging libraries, that you will still find in some production environments today.</p>
+</div>
+<div class="sect2">
+<h3 id="_java_util_logging_jul">java.util.logging (JUL)</h3>
+<div class="paragraph">
+<p>Since Java 1.4 (2002), the JDK comes bundled with its own logging 'framework', called java.util.logging, often abbreviated to JUL. Here&#8217;s an example of how you would log things with JUL:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="c1">// java.util.logging</span>
+<span class="n">java</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">logging</span><span class="o">.</span><span class="na">Logger</span> <span class="n">logger</span> <span class="o">=</span>  <span class="n">java</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">logging</span><span class="o">.</span><span class="na">Logger</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getName</span><span class="o">());</span>
+<span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"This is an info message"</span><span class="o">);</span>
+<span class="n">logger</span><span class="o">.</span><span class="na">severe</span><span class="o">(</span><span class="s">"This is an error message"</span><span class="o">);</span> <span class="c1">// == ERROR</span>
+<span class="n">logger</span><span class="o">.</span><span class="na">fine</span><span class="o">(</span><span class="s">"Here is a debug message"</span><span class="o">);</span> <span class="c1">// == DEBUG</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As is the case for every logging library, first you get a Logger for a specific class or package, and then you can log statements. You might think that the log levels 'severe' and 'fine' look weird, but they basically correspond to the 'error' and 'debug' levels of all modern Java logging libraries.</p>
+</div>
+<div class="paragraph">
+<p>And of course, you can configure your loggers with so called handlers, like a FileHandler (which writes log statements to files) or a ConsoleHandler (which writes to System.err).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="nc">FileHandler</span> <span class="n">fileHandler</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">FileHandler</span><span class="o">(</span><span class="s">"status.log"</span><span class="o">);</span>
+<span class="n">logger</span><span class="o">.</span><span class="na">addHandler</span><span class="o">(</span><span class="n">fileHandler</span><span class="o">);</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So, you might be asking, if there&#8217;s JUL, why would anyone need another logging framework?</p>
+</div>
+<div class="paragraph">
+<p>While JUL does the job, there have been <a href="https://stackoverflow.com/questions/11359187/why-not-use-java-util-logging">discussions</a> about its shortcomings in the past, spanning its inconsistent API, slow performance, lack of (complex) configuration options, documentation etc - which ultimately
+lead to people developing and using other logging frameworks.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_log4j_v1">Log4j (v1)</h3>
+<div class="paragraph">
+<p>For a long time, the most popular choice for logging in Java land was <a href="https://logging.apache.org/Log4j/1.2/">Log4j (version 1)</a>, which was initially released in 2001 and maintained until 2015. In fact, you&#8217;ll still find it being used in a fair number of corporate projects, in 2018.</p>
+</div>
+<div class="paragraph">
+<p>With Log4j, the logging example from above would look like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="c1">// Log4j V1</span>
+<span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">log4j</span><span class="o">.</span><span class="na">Logger</span> <span class="n">logger</span> <span class="o">=</span> <span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">log4j</span><span class="o">.</span><span class="na">Logger</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="nc">MyClass</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getName</span><span class="o">());</span>
+<span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"This is an info message"</span><span class="o">);</span>
+<span class="n">logger</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">"This is an error message"</span><span class="o">);</span>
+<span class="n">logger</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Here is a debug message"</span><span class="o">);</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It&#8217;s not only that Log4j has sane log level names, like 'error' and 'debug'. It also comes with a ton of different and clever appenders, like SMTPAppender (to e-mail log events), SyslogAppenders (to send events to a remote syslog daemon), JdbcAppenders (to send them to the database) and <a href="https://stackoverflow.com/a/36482">many more</a>.</p>
+</div>
+<div class="paragraph">
+<p>Also it gives you a fair amount of control over what exactly a log message should look like, with the help of <a href="https://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/PatternLayout.html">PatternLayouts</a>. So, the same log event in your Java application, could be printed out in a log file like so, depending on the layout:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="c"># contents of status.log</span>
+
+<span class="o">[</span>INFO] 2012-11-02 21:57:53,662 MyLoggingClass - Application succesfully started on port 8080
+
+<span class="c"># or</span>
+
+2010.03.23-mainThread <span class="nt">--INFO</span> <span class="nt">-MyLoggingClass</span>:Application succesfully started on port 8080
+
+<span class="c"># or other endless possibilities</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Log4j does the job quite well, but got superseded by Log4j2 in the past years, which is not fully compatible with Log4j1, hence we will talk about it in the next section.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_apache_commons_logging_jcl">Apache Commons Logging (JCL)</h3>
+<div class="paragraph">
+<p>Around the same time, in 2002, another library popped up, called <a href="https://commons.apache.org/proper/commons-logging/">JCL</a>, which goes by two names. Jakarta Commons Logging or Apache Commons Logging.</p>
+</div>
+<div class="paragraph">
+<p>The interesting thing about JCL is, that it is not a logging framework implementation itself. Rather, it is an interface for other logging implementations. What does that mean?</p>
+</div>
+<div class="paragraph">
+<p>As you might have guessed, the logging code itself stays fairly simple, only instead of referencing JUL or Log4j classes, you now reference the JCL classes - provided you have the JCL library on your classpath.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="c1">// Apache Commons Logging</span>
+<span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">commons</span><span class="o">.</span><span class="na">logging</span><span class="o">.</span><span class="na">Log</span> <span class="n">log</span> <span class="o">=</span> <span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">commons</span><span class="o">.</span><span class="na">logging</span><span class="o">.</span><span class="na">LogFactory</span><span class="o">.</span><span class="na">getLog</span><span class="o">(</span><span class="nc">MyApp</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"This is an info message"</span><span class="o">);</span>
+<span class="n">log</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">"This is an error message"</span><span class="o">);</span>
+<span class="n">log</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Here is a debug message"</span><span class="o">);</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So, your code only uses JCL specific classes. But then the actual logging is done by another logging framework, and it doesn&#8217;t matter if it is Log4j, JUL or (the long defunct) <a href="https://avalon.apache.org/closed.html">Apache Avalon</a>.</p>
+</div>
+<div class="paragraph">
+<p>That means you need another library, like Log4j, on your classpath and configure these two to work together.</p>
+</div>
+<div class="paragraph">
+<p><strong>Why would anyone want to do this?</strong></p>
+</div>
+<div class="paragraph">
+<p>Why wouldn&#8217;t you want to use Log4j directly, instead? There&#8217;s one major use-case, which is writing libraries:</p>
+</div>
+<div class="paragraph">
+<p>When writing libraries, you simply do not know which logging framework a user of your library wants to use in his own application. It therefore makes sense to write your library to use a logging interface - and then the user can plug in any logging implementation that he or she wants, whenever he deploys his own application.</p>
+</div>
+<div class="paragraph">
+<p><strong>Where&#8217;s the catch?</strong></p>
+</div>
+<div class="paragraph">
+<p>The problem with JCL is, that it relies on <a href="https://articles.qos.ch/thinkAgain.html?">classloader hacks</a> to find out which logging implementation it should use - at runtime. And that can lead to a lot of pain. In addition, you&#8217;ll find that the API is somewhat inflexible, that it comes with a fair amount of cruft, and there&#8217;s simply better alternatives out there, nowadays.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_modern_logging_libraries">Modern Logging Libraries</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_slf4j_logback">SLF4J &amp; Logback</h3>
+<div class="paragraph">
+<p>At some point, the original creator of Log4j, Ceki Gülcü, decided to split from the Log4j project and create a successor, which was not called Log4j2, but <a href="https://logback.qos.ch/">Logback</a>. You can read about what he tried to make better with Logback <a href="https://logback.qos.ch/reasonsToSwitch.html">here</a>.</p>
+</div>
+<div class="paragraph">
+<p>Suffice to say, that Logback is a mature and solid logging library, with a ton of features, of which auto-reloading of configuration files in production is one that developers seem to remember the most.</p>
+</div>
+<div class="paragraph">
+<p>Somewhat in parallel, he also started writing the Simple Logging Facade for Java, also known as <a href="https://www.slf4j.org/">SLF4J</a>, which is very similar to the Apache Commons Logging 'bridging' library above, just with a better implementation. Let&#8217;s see what that means:</p>
+</div>
+<div class="paragraph">
+<p>To get started with SLF4J, you only need one library on the classpath, the slf4j-api dependency . If you are using a dependency management tool like <a href="https://maven.apache.org/">Maven</a>, then you would add the following dependency to your dependencies section:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.slf4j<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>slf4j-api<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>1.7.30<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Having the API on your classpath will allow you to write log statements like the following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="c1">// SLF4J</span>
+<span class="n">org</span><span class="o">.</span><span class="na">slf4j</span><span class="o">.</span><span class="na">Logger</span> <span class="n">logger</span> <span class="o">=</span> <span class="n">org</span><span class="o">.</span><span class="na">slf4j</span><span class="o">.</span><span class="na">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="nc">MyClass</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"This is an info message"</span><span class="o">);</span>
+<span class="n">logger</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">"This is an error message"</span><span class="o">);</span>
+<span class="n">logger</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Here is a debug message"</span><span class="o">);</span> <span class="c1">//  you do not need 'logger.isDebugEnabled' checks anymore. SLF4J will handle that for you).</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Just like JCL, SLF4J cannot do logging itself. It needs a logging library to do the actual logging, like Log4j, JUL, Logback etc. So, say you want to use Log4j v1, you would then need the slf4j-log4j12 binding library in your classpath:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.slf4j<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>slf4j-log4j12<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>1.7.30<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>That dependency will transitively pull in Log4j (v1) for you and also make sure that SLF4J logs 'through' Log4j. If you are interested in how this works, read the section about <a href="https://www.slf4j.org/manual.html">bindings</a> in the SLF4J manual.</p>
+</div>
+<div class="paragraph">
+<p>Other libraries, like Logback, don&#8217;t need a binding library, because they implement SLF4J natively, so you can simply use the slf4j-api dependency, drop in the logback-classic jar as well, and you can log through Logback.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>ch.qos.logback<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>logback-classic<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>1.2.3<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The beauty of this approach is, that your code only knows SLF4J. There are no references to Log4j, Logback or Jul. And if you are writing a library, that&#8217;s even better. Because if your library uses SLF4J, then the end-user of your library can decide
+to log either with Log4j, or Logback, or whatever library he wants. Because that choice can simply be made by adding or removing a couple of jars to or from the classpath.</p>
+</div>
+<div class="paragraph">
+<p><strong>Hold on, aren&#8217;t we missing something?</strong></p>
+</div>
+<div class="paragraph">
+<p>Things get interesting, whenever you are using 3rd party libraries, that are hardcoded to use a specific logging library. Imagine you are using a PDF
+generator library, which is hardcoded to use Log4j. You are also using an e-mail sending library, which uses JUL.
+Your own application uses SLF4J, but you cannot just go and change the source code of these libraries to use SLF4J as well.</p>
+</div>
+<div class="paragraph">
+<p>What to do now?</p>
+</div>
+<div class="paragraph">
+<p>Thankfully, the SLF4J creators thought about that use-case as well see what that looks like, by looking at the Maven dependencies first:</p>
+</div>
+<div class="paragraph">
+<p>Whenever you pull in a 3rd party-library that uses Log4j, it will, obviously, pull in the Log4j dependency. The Log4j dependency looks like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>log4j<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>log4j<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>1.2.17<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You then need to make sure to <strong>exclude</strong> that dependency from your project and use the following drop-in replacement instead:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.slf4j<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>log4j-over-slf4j<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>1.7.30<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here&#8217;s the trick: Inside that log4j-over-slf4j.jar, you&#8217;ll find classes like org.apache.log4j.Logger, but they have nothing to do with Log4j!
+Instead, these are SLF4J specific classes, i.e. your code 'thinks' it calls Log4j, but instead everything gets routed to SLF4J. (The same is true for the other 'over-slf4j' libraries, except for the JUL library, which you can read <a href="https://www.slf4j.org/legacy.html">about here</a>).</p>
+</div>
+<div class="paragraph">
+<p>Which in turn means, that you, as the end-user of a library, can use whatever logging library you want, even though the original library creator wanted you to use
+Log4j specifically.</p>
+</div>
+<div class="paragraph">
+<p><strong>Real-Life</strong></p>
+</div>
+<div class="paragraph">
+<p>So, depending on what you are building and the third-party libraries you are using, you might end-up with the following libraries in your classpath:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The SLF4J API</p>
+</li>
+<li>
+<p>Your SLF4J implementation, like Logback, or Log4j, etc.</p>
+</li>
+<li>
+<p>One or multiple bridging libraries, like log4j-over-slf4j, jul-to-slf4j, jcl-over-slf4j etc.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong><mark>Main Takeaway</mark></strong></p>
+</div>
+<div class="paragraph">
+<p>With SLF4J, you code to the API, and can choose the implementation (Log4j, Logback etc.) later (compile time). In addition, you can use bridging libraries to make legacy
+3rd party libraries 'speak' SLF4J.</p>
+</div>
+<div class="paragraph">
+<p>While all of this might look scary for beginners, it all makes sense with a bit of experience.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_log4j2">Log4j2</h3>
+<div class="paragraph">
+<p>One might think that SLF4J, with all the surrounding logging libraries, would cover almost all logging needs. Seems to be not so. In 2014, a successor to the Log4j (v1) library was released, called <a href="https://logging.apache.org/log4j/2.x/">Log4j2</a> - being a complete rewrite and of course heavily inspired by all other existing logging libraries.</p>
+</div>
+<div class="paragraph">
+<p>Additionally, just like SLF4J, or JCL, or Commons Logging, Log4j2 can be used as a bridge, as it comes with two dependencies:</p>
+</div>
+<div class="paragraph">
+<p>An API dependency:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.apache.logging.log4j<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>log4j-api<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>2.14.0<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And the actual logging implementation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.apache.logging.log4j<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>log4j-core<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>2.14.0<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The API dependency works with a variety of other logging frameworks, just like SLF4J or JCL do. You can drop in Log4j2&#8217;s own logging implementation, use an SLF4J implementation, or use one of the bridging/adapter libraries
+to setup your logging in whatever way you wish. Your code, however, will only reference the Log4j2 classes like so:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="c1">// Log4j (version 2)</span>
+<span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">logging</span><span class="o">.</span><span class="na">log4j</span><span class="o">.</span><span class="na">Logger</span> <span class="n">logger</span> <span class="o">=</span> <span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">logging</span><span class="o">.</span><span class="na">log4j</span><span class="o">.</span><span class="na">LogManager</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="nc">MyApp</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"This is an info message"</span><span class="o">);</span>
+<span class="n">logger</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">"This is an error message"</span><span class="o">);</span>
+<span class="n">logger</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Here is a debug message"</span><span class="o">);</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you have read the previous sections, you might conclude that SLF4J and Log4j2 have a lot in common and it is unclear, why one would want to use Log4j2 instead of just sticking with SLF4J.</p>
+</div>
+<div class="paragraph">
+<p>The creators of Log4j2 have tried to answer this question themselves <a href="https://logging.apache.org/log4j/2.0/faq.html#api-tradeoffs">here</a>, with the main difference seemingly being the performance (AsyncLogger, Garbage Collections] and the slightly
+better API (Abilities to log objects, not just strings, Lambda Support etc).</p>
+</div>
+<div class="paragraph">
+<p>Though it should be said that, while these reasons might make a difference in complex high-load applications, developers working on 'normal' applications likely won&#8217;t notice a difference.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_jboss_logging">Jboss Logging</h3>
+<div class="paragraph">
+<p>Talking about logging libraries wouldn&#8217;t be complete, without mentioning <a href="http://docs.jboss.org/hibernate/orm/4.3/topical/html/logging/Logging">JBoss-Logging</a>. It&#8217;s yet another logging bridge, very similar to SLF4J or JCL, so you&#8217;ll have to use
+it with another logging implementation, or even SLF4J itself.</p>
+</div>
+<div class="paragraph">
+<p>It&#8217;s main claim to fame, compared to these other logging bridges, seems to be its <a href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;uact=8&amp;ved=2ahUKEwjsmP2d1a3dAhWFw4sKHXgeCNwQFjAAegQIARAB&amp;url=http%3A%2F%2Fdocs.jboss.org%2Fhibernate%2Form%2F4.3%2Ftopical%2Fhtml%2Flogging%2FLogging&amp;usg=AOvVaw2-JUSOliyacyYP0gRM4HnM">internationalization features</a>.
+Other than that there seems to be very little reason to base your project entirely on jboss-logging, though you will find projects like <a href="http://hibernate.org/">Hibernate</a> use it, because both libraries are developed under the <a href="https://www.redhat.com/de">RedHat umbrella</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_how_to_log">How to log</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Once you decided on your favourite logging framework, it&#8217;s time to <em>actually use</em> your logger as well. Which brings us to the question: <strong>How</strong> should you log?</p>
+</div>
+<div class="sect2">
+<h3 id="_a_small_technical_nit_pick">A small, technical nit-pick</h3>
+<div class="paragraph">
+<p>If you have a look across different Java projects in your organization, or even just look at one project, you&#8217;ll likely see a variety of ways that people try to get a Logger instance: The class that enables them to log in the first-place.</p>
+</div>
+<div class="paragraph">
+<p>This can take the looks of:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="c1">// in class 1</span>
+<span class="kd">private</span> <span class="nc">Logger</span> <span class="no">LOG</span> <span class="o">=</span> <span class="nc">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(...);</span>
+
+<span class="c1">// in class 2</span>
+<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">Logger</span> <span class="no">LOGGER</span> <span class="o">=</span> <span class="o">....;</span>
+
+<span class="c1">// in class 3</span>
+<span class="kd">private</span> <span class="kd">static</span> <span class="nc">Logger</span> <span class="n">log</span> <span class="o">=</span> <span class="nc">Logger</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(...);</span>
+
+<span class="c1">// in class 4</span>
+<span class="kd">private</span> <span class="nc">Logger</span> <span class="no">LOG_INSTANCE</span> <span class="o">=</span> <span class="o">...;</span>
+
+<span class="c1">// etc. etc.</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now what <em>should</em> this look like instead? To which there is an easy answer. If the class you are creating, and the method you are calling to create that class, both have the word "logger" inside, then call the variable 'logger'.</p>
+</div>
+<div class="paragraph">
+<p>Don&#8217;t fret too much about static or non-static, final or non-final, just make sure to be homogeneous in your choice, throughout your entire project.</p>
+</div>
+<div class="paragraph">
+<p>And finally, there is really no need to UPPER_CASE your logger just for the sake of it, certainly not as the only exception in your codebase.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_log_levels_files">Log Levels &amp; Files</h3>
+<div class="paragraph">
+<p>An insanely interesting topic is: To which log level should you <em>actually</em> log to? You have the choice of TRACE, DEBUG, INFO, WARN, ERROR, FATAL and a fair amount of developers
+feel unsure of when to use which one.</p>
+</div>
+<div class="paragraph">
+<p>Here&#8217;s a general approach that I&#8217;ve seen used successfully in a few places, but note that this is not written in stone. Make changes to these guidelines where appropriate, but make sure you have a solid use case and reasoning for it. And most importantly, make sure that
+your developers and operations guys are on the same page.</p>
+</div>
+<div class="paragraph">
+<p>Now let&#8217;s first have a look at the "error group" log levels individually, and what you might use them for.</p>
+</div>
+<div class="sect3">
+<h4 id="_fatal">FATAL</h4>
+<div class="paragraph">
+<p><em>Anything at this level means your Java process cannot continue and will now terminate.</em></p>
+</div>
+<div class="paragraph">
+<p>The least interesting log-level, as you are very unlikely to use it in your application and API&#8217;s such as SLF4J <a href="https://www.slf4j.org/faq.html#fatal">don&#8217;t even support it directly</a>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_error">ERROR</h4>
+<div class="paragraph">
+<p><em>A request was aborted and the underlying reason requires human intervention ASAP.</em></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_warn">WARN</h4>
+<div class="paragraph">
+<p><em>A request was not serviced satisfactorily, intervention is required soon, but not necessarily immediately.</em></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_what_does_that_mean_in_practical_terms">What does that mean in practical terms?</h4>
+<div class="paragraph">
+<p>For assessing entries against ERROR &amp; WARN you can ask the question "what is the action required" and if it doesn&#8217;t sound like an "OMG! Get that action covered now!" type of event, it gets demoted to a lesser level for not meeting criteria.</p>
+</div>
+<div class="paragraph">
+<p>Think about you pushing a new feature of your shiny fintech (bank) application to production, which unfortunately triggers the infamous Hibernate LazyLoadingException whenever
+a user tries to display the recent transactions for his bank account. That sounds like a pretty strong OMG situation, and you&#8217;ll want these errors to be logged as "errors" - and trigger appropriate reactive measures.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">2018-09-11 08:48:36.480 ERROR 10512 <span class="nt">---</span> <span class="o">[</span>ost-startStop-1] com.marcobehler.UserService        : Retrieving transaction list <span class="k">for </span>user[id<span class="o">={}]</span> failed
+
+org.hibernate.LazyInitializationException: failed to lazily initialize a collection of role: User.transactionDetails, could not initialize proxy - no Session
+	at org.hibernate.collection.internal.AbstractPersistentCollection.throwLazyInitializationException<span class="o">(</span>AbstractPersistentCollection.java:582<span class="o">)</span>
+	at org.hibernate.collection.internal.AbstractPersistentCollection.withTemporarySessionIfNeeded<span class="o">(</span>AbstractPersistentCollection.java:201<span class="o">)</span>
+	at org.hibernate.collection.internal.AbstractPersistentCollection.initialize<span class="o">(</span>AbstractPersistentCollection.java:561<span class="o">)</span>
+	at org.hibernate.collection.internal.AbstractPersistentCollection.read<span class="o">(</span>AbstractPersistentCollection.java:132<span class="o">)</span>
+	at org.hibernate.collection.internal.PersistentBag.iterator<span class="o">(</span>PersistentBag.java:277<span class="o">)</span>
+	at java.lang.Iterable.forEach<span class="o">(</span>Iterable.java:74<span class="o">)</span>
+	at LibraryTest.spring_test<span class="o">(</span>LibraryTest.java:78<span class="o">)</span>
+    ...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then think about a batch job, which imports transactions on a daily or weekly basis. As is the case quite often, some records might be malformed and thus cannot be imported into the system.
+Someone, a person, needs to have a look at these records manually and fix them. But likely this isn&#8217;t as time-sensitive and urgent as the error case, so
+you&#8217;ll choose to log these items with the WARN level.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">2018-09-11 00:00:36.480 WARN 10512 <span class="nt">---</span> <span class="o">[</span>ost-startStop-1] com.marcobehler.BatchJob        : Could not import record[id<span class="o">=</span>25] from csv file[name<span class="o">=</span>transactions.csv] because of malformed[firstName,lastName]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The main reasoning behind keeping ERROR and WARN tags clean is that it makes monitoring and hence reacting to those events much simpler.</p>
+</div>
+<div class="paragraph">
+<p>Or in simple terms: Make sure to wake-up your operations guy at 3am in the morning for the right (kind of) error.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_info">INFO</h4>
+<div class="paragraph">
+<p>Info is the log level developers probably feel most 'comfortable' using and in practice you&#8217;ll find that developers print out a ton of statements with the
+INFO level, from client activities (webapps), progress information (batch jobs) to quite intricate, internal process flow details.</p>
+</div>
+<div class="paragraph">
+<p>Again, it can be a blurry line to decide what should be INFO and what should be DEBUG, but in general, process flow details should rather be logged with the debug level, instead of
+completely replicating a user&#8217;s journey through your application in an info.log.</p>
+</div>
+<div class="paragraph">
+<p>Historically, the main reason for logging out almost everything as INFO was, that it has been
+difficult to change log levels on the fly for applications, without having to restart (bounce) said application. Sometimes, organizational silos
+between developers and operations staff are also too large, to effortlessly and swiftly change log levels. Hence, developers chose to be on the safe-side and print out 'more', than less, to the console
+to be able to trace entire calls through the system.</p>
+</div>
+<div class="paragraph">
+<p>Enough introduction. Let&#8217;s have a look at some examples.</p>
+</div>
+<div class="paragraph">
+<p>Obviously, you can use the INFO level to log out application status, like the following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">2018-09-11 08:46:26.547  INFO 8844 <span class="nt">---</span> <span class="o">[</span>           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port<span class="o">(</span>s<span class="o">)</span>: 8080 <span class="o">(</span>http<span class="o">)</span> with context path <span class="s1">''</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>But another, intriguing way to think about the INFO level is as an additional (weak) error case: A request was not serviced satisfactorily but resolution details have been passed to the requestor and no proactive support is required.</p>
+</div>
+<div class="paragraph">
+<p>An example info would be "user login failed, incorrect username or password".</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">2018-09-11 08:46:26.547  INFO 8844 <span class="nt">---</span> <span class="o">[</span>           main] com.marcobehler.UserService  : User with <span class="nb">id</span><span class="o">[=</span>45] tried to login with wrong username/password combination</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You might want to log these because the user (through layers of support) might come to ops asking questions about why they cannot use the application. The ops staff will be able to see the reason in the logfile (even although the user has already been given this info via the app front end).</p>
+</div>
+<div class="paragraph">
+<p>Finally, there&#8217;s two more log levels, 'debug' and 'trace'. There have been quite a few heated discussions on the need for a <a href="https://www.slf4j.org/faq.html#trace">trace level online</a>, and SLF4J introduced the trace log level only in one of its later (newer) versions - after many community requests.</p>
+</div>
+<div class="paragraph">
+<p>Once more, the line between these two can be blurry, but let&#8217;s have a quick look at them:</p>
+</div>
+<div class="paragraph">
+<p><strong>DEBUG</strong></p>
+</div>
+<div class="paragraph">
+<p>Advanced level detail of internal process flows. This is only turned on during investigation of specific issues and turned off again after. Depending on the logging library used, it might not be possible to do this without bouncing (restarting) the application, which might not be acceptable.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">2018-08-01 05:05:00,031 DEBUG - Checking uploaded XML files <span class="k">for </span>valid structure <span class="o">[</span>...]
+2018-08-01 05:06:00,031 DEBUG - Checking uploaded XML files <span class="k">for </span>valid content <span class="o">[</span>...]
+2018-08-01 05:07:00,031 DEBUG - Masking inputs <span class="k">for </span>XML file[id<span class="o">=</span>5] <span class="o">[</span>...]
+2018-08-01 05:08:00,031 DEBUG - Replacing <span class="o">[</span>...] XML sections <span class="k">for </span>file[id<span class="o">=</span>5] with <span class="o">[</span>...]
+...
+2018-08-01 05:09:00,142 DEBUG - Forwarding XML file to archiving service</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>TRACE</strong> - More details than debug or reserved for use in specific environments</p>
+</div>
+<div class="paragraph">
+<p>You could see the trace level as even more detailed as the debug level, or you could decide to couple the trace level with certain environments, i.e. the DEV or TEST environment, where developers can go crazy and feel free to log out whatever they want and know that 'trace' will always be disabled on production. (Although this could also easily be achieved with different log configurations/profiles)</p>
+</div>
+<div class="paragraph">
+<p>Nevertheless, if you want to have a look at a framework that uses the TRACE logging framework diligently, then just have a look at the <a href="https://spring.io/">Spring Framework</a>.  When using Spring&#8217;s transaction management, you will only be able to see the real database transaction boundaries, when you enable the TRACE logging level:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">2018-08-01 05:05:00,031 TRACE - Getting transaction <span class="k">for</span> <span class="o">[</span>com.marcobehler.BitcoinApp.mine]
+
+... your own log statements./..
+
+2018-08-01 05:05:00,142 TRACE - Completing transaction <span class="k">for</span> <span class="o">[</span>com.marcobehler.BitcoinApp.mine]</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_log_files">Log Files</h4>
+<div class="paragraph">
+<p>When talking about log files, a common approach is to have separate files for separate use cases. That means an application will normally log to more than one logfile.</p>
+</div>
+<div class="paragraph">
+<p>You could have an <em>error.log</em> (with a filename pattern of &lt;appname&gt;.&lt;instance-name&gt;.YYYYMMDD.ZZZ.error.log), which is consumed by monitoring and alerting system and by operations staff. Obviously, you&#8217;d only want entries in that
+log file you want to alert on, i.e. your ERROR or WARN statements.</p>
+</div>
+<div class="paragraph">
+<p>You could have another log file called <em>info.log</em> or <em>status.log</em> (with a filename pattern of &lt;appname&gt;.&lt;instance-name&gt;.YYYYMMDD.ZZZ.status.log), which contains the aforementioned information about application progress or user activity, as well as e.g. a trace.log file whenever you want to go crazy with logging.</p>
+</div>
+<div class="paragraph">
+<p>When logging to separate files it makes sense to have a command line utility (like <a href="https://github.com/siom79/log-merger">log-merger</a>, or just a plain old bash script) to merge these separate logfiles on the fly for a specific timestamp.</p>
+</div>
+<div class="paragraph">
+<p>Imagine you have two files:</p>
+</div>
+<div class="paragraph">
+<p><em>error.log</em></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">2015-08-29 15:49:46,641 ERROR <span class="o">[</span>org.jboss.msc.service.fail] <span class="o">(</span>MSC service thread 1-4<span class="o">)</span> MSC000001: Failed to start service jboss.undertow.listener.default: org.jboss.msc.service.StartException <span class="k">in </span>service jboss.undertow.listener.default: Could not start http listener
+	at org.wildfly.extension.undertow.ListenerService.start<span class="o">(</span>ListenerService.java:150<span class="o">)</span>
+	at org.jboss.msc.service.ServiceControllerImpl<span class="nv">$StartTask</span>.startService<span class="o">(</span>ServiceControllerImpl.java:1948<span class="o">)</span>
+	at org.jboss.msc.service.ServiceControllerImpl<span class="nv">$StartTask</span>.run<span class="o">(</span>ServiceControllerImpl.java:1881<span class="o">)</span>
+	at java.util.concurrent.ThreadPoolExecutor.runWorker<span class="o">(</span>ThreadPoolExecutor.java:1142<span class="o">)</span>
+	at java.util.concurrent.ThreadPoolExecutor<span class="nv">$Worker</span>.run<span class="o">(</span>ThreadPoolExecutor.java:617<span class="o">)</span>
+	at java.lang.Thread.run<span class="o">(</span>Thread.java:745<span class="o">)</span>
+Caused by: java.net.BindException: Die Adresse wird bereits verwendet
+	at sun.nio.ch.Net.bind0<span class="o">(</span>Native Method<span class="o">)</span>
+	at sun.nio.ch.Net.bind<span class="o">(</span>Net.java:436<span class="o">)</span>
+	at sun.nio.ch.Net.bind<span class="o">(</span>Net.java:428<span class="o">)</span>
+	at sun.nio.ch.ServerSocketChannelImpl.bind<span class="o">(</span>ServerSocketChannelImpl.java:214<span class="o">)</span>
+	at sun.nio.ch.ServerSocketAdaptor.bind<span class="o">(</span>ServerSocketAdaptor.java:74<span class="o">)</span>
+	at sun.nio.ch.ServerSocketAdaptor.bind<span class="o">(</span>ServerSocketAdaptor.java:67<span class="o">)</span>
+	at org.xnio.nio.NioXnioWorker.createTcpConnectionServer<span class="o">(</span>NioXnioWorker.java:182<span class="o">)</span>
+	at org.xnio.XnioWorker.createStreamConnectionServer<span class="o">(</span>XnioWorker.java:243<span class="o">)</span>
+	at org.wildfly.extension.undertow.HttpListenerService.startListening<span class="o">(</span>HttpListenerService.java:115<span class="o">)</span>
+	at org.wildfly.extension.undertow.ListenerService.start<span class="o">(</span>ListenerService.java:147<span class="o">)</span>
+	... 5 more</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and</p>
+</div>
+<div class="paragraph">
+<p><em>status.log</em></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">2015-08-29 15:49:46,033 INFO  <span class="o">[</span>org.xnio] <span class="o">(</span>MSC service thread 1-3<span class="o">)</span> XNIO version 3.3.1.Final</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After running the log-merger utility, they can be viewed, on-the-fly, as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><span class="o">[</span>1] 2015-08-29 15:49:46,033 INFO  <span class="o">[</span>org.xnio] <span class="o">(</span>MSC service thread 1-3<span class="o">)</span> XNIO version 3.3.1.Final
+<span class="o">[</span>0] 2015-08-29 15:49:46,641 ERROR <span class="o">[</span>org.jboss.msc.service.fail] <span class="o">(</span>MSC service thread 1-4<span class="o">)</span> MSC000001: Failed to start service jboss.undertow.listener.default: org.jboss.msc.service.StartException <span class="k">in </span>service jboss.undertow.listener.default: Could not start http listener
+<span class="o">[</span>0] 	at org.wildfly.extension.undertow.ListenerService.start<span class="o">(</span>ListenerService.java:150<span class="o">)</span>
+<span class="o">[</span>0] 	at org.jboss.msc.service.ServiceControllerImpl<span class="nv">$StartTask</span>.startService<span class="o">(</span>ServiceControllerImpl.java:1948<span class="o">)</span>
+<span class="o">[</span>0] 	at org.jboss.msc.service.ServiceControllerImpl<span class="nv">$StartTask</span>.run<span class="o">(</span>ServiceControllerImpl.java:1881<span class="o">)</span>
+<span class="o">[</span>0] 	at java.util.concurrent.ThreadPoolExecutor.runWorker<span class="o">(</span>ThreadPoolExecutor.java:1142<span class="o">)</span>
+<span class="o">[</span>0] 	at java.util.concurrent.ThreadPoolExecutor<span class="nv">$Worker</span>.run<span class="o">(</span>ThreadPoolExecutor.java:617<span class="o">)</span>
+<span class="o">[</span>0] 	at java.lang.Thread.run<span class="o">(</span>Thread.java:745<span class="o">)</span>
+<span class="o">[</span>0] Caused by: java.net.BindException: Die Adresse wird bereits verwendet
+<span class="o">[</span>0] 	at sun.nio.ch.Net.bind0<span class="o">(</span>Native Method<span class="o">)</span>
+<span class="o">[</span>0] 	at sun.nio.ch.Net.bind<span class="o">(</span>Net.java:436<span class="o">)</span>
+<span class="o">[</span>0] 	at sun.nio.ch.Net.bind<span class="o">(</span>Net.java:428<span class="o">)</span>
+<span class="o">[</span>0] 	at sun.nio.ch.ServerSocketChannelImpl.bind<span class="o">(</span>ServerSocketChannelImpl.java:214<span class="o">)</span>
+<span class="o">[</span>0] 	at sun.nio.ch.ServerSocketAdaptor.bind<span class="o">(</span>ServerSocketAdaptor.java:74<span class="o">)</span>
+<span class="o">[</span>0] 	at sun.nio.ch.ServerSocketAdaptor.bind<span class="o">(</span>ServerSocketAdaptor.java:67<span class="o">)</span>
+<span class="o">[</span>0] 	at org.xnio.nio.NioXnioWorker.createTcpConnectionServer<span class="o">(</span>NioXnioWorker.java:182<span class="o">)</span>
+<span class="o">[</span>0] 	at org.xnio.XnioWorker.createStreamConnectionServer<span class="o">(</span>XnioWorker.java:243<span class="o">)</span>
+<span class="o">[</span>0] 	at org.wildfly.extension.undertow.HttpListenerService.startListening<span class="o">(</span>HttpListenerService.java:115<span class="o">)</span>
+<span class="o">[</span>0] 	at org.wildfly.extension.undertow.ListenerService.start<span class="o">(</span>ListenerService.java:147<span class="o">)</span>
+<span class="o">[</span>0] 	... 5 more</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can of course choose also to log everything into one file from the beginning.</p>
+</div>
+<div class="paragraph">
+<p>There&#8217;s one caveat however: Experience shows that developers often mistakenly assume that, just because log statements have a time/location correlation - which might run counter-intuitive, especially as we have just talked about merging log files.</p>
+</div>
+<div class="paragraph">
+<p>Here&#8217;s an example: Imagine you have an application which uses Hibernate. It boots up to a certain point and then it hangs, you see no more log messages. The application simply doesn&#8217;t start up.</p>
+</div>
+<div class="paragraph">
+<p>The last log message you see is the following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">2018-09-11 09:35:19.166  INFO 14620 <span class="nt">---</span> <span class="o">[</span>ost-startStop-1] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory <span class="k">for </span>persistence unit <span class="s1">'default'</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It&#8217;s easy to assume that something must be broken with JPA or Hibernate, just because that&#8217;s your last log message. In fact, it <em>could</em> be Hibernate, but your application could also hang trying to boot up another part/third-party framework, that has not gotten around to log stuff out, yet.</p>
+</div>
+<div class="paragraph">
+<p>So be wary, when you come to quick conclusions, which happens often in high-pressure situations: When there&#8217;s a severe bug on production. Correlation in the log file through location/timestamp doesn&#8217;t automatically mean it <em>IS</em> correlated, only that it <em>CAN</em> be.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_mdc">MDC</h3>
+<div class="paragraph">
+<p>To make correlation of log statements strong, there&#8217;s another important concept to know, especially if you are working with multiple distributed processes (microservices): The <a href="https://logback.qos.ch/manual/mdc.html">Mapped Diagnostic Context (MDC)</a> or <a href="https://logging.apache.org/log4j/2.x/manual/thread-context.html">Thread Context</a>.</p>
+</div>
+<div class="paragraph">
+<p>Imagine you have a user-request coming in, that is routed to multiple, different microservices.
+When something goes wrong, a request fails, how do you know which log lines from which microservices correspond to that very request. Easy: You need a generated request-id that you want to log out with <strong>every</strong> log message.</p>
+</div>
+<div class="paragraph">
+<p>And because you are lazy, you don&#8217;t want to have to manually log out that id, it should just work automatically. That&#8217;s where the MDC comes in.</p>
+</div>
+<div class="paragraph">
+<p>Somewhere in your code, in an HTTP servlet-filter, you&#8217;ll have something like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="no">MDC</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"requestId"</span><span class="o">,</span> <span class="s">"lknwelqk-12093alks-123nlkasn-5t234-lnakmwen"</span><span class="o">);</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>That&#8217;s enough. Just one call to a static method.</p>
+</div>
+<div class="paragraph">
+<p>Later, in your application code, you will continue logging as usual:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"Hi, my name is: Slim Shady!"</span><span class="o">);</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You also need to configure your log library to log out the MDC variable with every log statement (see <a href="https://logback.qos.ch/manual/mdc.html">here</a>). Which will give you log messages that look like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><span class="o">[</span>lknwelqk-12093alks-123nlkasn-5t234-lnakmwen] - Hi, my name is: Slim Shady!</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then it&#8217;s very easy to correlate all corresponding log messages, you simply have to specify or search for the same request-id across all your log files or in your centralized logging server.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_sensitive_information">Sensitive Information</h3>
+<div class="paragraph">
+<p>It goes without saying that you should avoid (read: must not) logging out sensitive information: User credentials (i.e. passwords) or financial information (like credit card numbers etc.) or similar sensitive user details.</p>
+</div>
+<div class="paragraph">
+<p>Depending on the complexity of your system, you might however not want to worry about fixing up every individual log statement in your system (though you might be forced to, by means of an audit), but have more of a generic solution that makes sure that certain information is masked - either partially or completely, depending
+on the security standards you need to adhere to.</p>
+</div>
+<div class="paragraph">
+<p>In the case of Log4j2 for example this means writing a custom <a href="https://logging.apache.org/log4j/2.0/log4j-core/apidocs/org/apache/logging/log4j/core/pattern/LogEventPatternConverter.html">LogEventPatternConverter</a>, that masks log events according to your regulations.</p>
+</div>
+<div class="paragraph">
+<p>Obviously, a full masking solution is out of the scope of this guide, but you can get some pointers <a href="https://objectpartners.com/2017/09/26/masking-sensitive-data-in-log4j-2/">here</a> and <a href="https://stackoverflow.com/questions/16775253/how-masking-of-sensitive-data-is-achieved-using-slf4j-framework">here</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_proactive_help">Proactive Help</h3>
+<div class="paragraph">
+<p>Another topic that isn&#8217;t really covered in detail anywhere, is <em>WHAT</em> exactly to write inside your log statements. And that brings us to the concept of <em>proactive help</em>.</p>
+</div>
+<div class="paragraph">
+<p>A great example is the <a href="https://spring.io/projects/spring-boot">Spring Boot</a> framework. When you are building a web application with Spring Boot and start it up for testing, the application will run under port 8080, so you can access it in your browser from <a href="http://localhost:8080" class="bare">http://localhost:8080</a>.</p>
+</div>
+<div class="paragraph">
+<p>Sometimes it happens, that you have another Spring Boot application or an older version of the same application already running on port 8080. Which means you cannot start up your application as that will fail. In older Spring Boot versions, they simply
+logged out the "raw" exception, which looks like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">2018-09-11 09:35:57.062 ERROR 15516 <span class="nt">---</span> <span class="o">[</span>           main] o.apache.catalina.core.StandardService   : Failed to start connector <span class="o">[</span>Connector[HTTP/1.1-8080]]
+
+org.apache.catalina.LifecycleException: Failed to start component <span class="o">[</span>Connector[HTTP/1.1-8080]]
+	at org.apache.catalina.util.LifecycleBase.start<span class="o">(</span>LifecycleBase.java:167<span class="o">)</span>
+	at org.apache.catalina.core.StandardService.addConnector<span class="o">(</span>StandardService.java:225<span class="o">)</span>
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.addPreviouslyRemovedConnectors<span class="o">(</span>TomcatWebServer.java:256<span class="o">)</span>
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.start<span class="o">(</span>TomcatWebServer.java:198<span class="o">)</span>
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.startWebServer<span class="o">(</span>ServletWebServerApplicationContext.java:300<span class="o">)</span>
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.finishRefresh<span class="o">(</span>ServletWebServerApplicationContext.java:162<span class="o">)</span>
+	at org.springframework.context.support.AbstractApplicationContext.refresh<span class="o">(</span>AbstractApplicationContext.java:553<span class="o">)</span>
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh<span class="o">(</span>ServletWebServerApplicationContext.java:140<span class="o">)</span>
+	at org.springframework.boot.SpringApplication.refresh<span class="o">(</span>SpringApplication.java:759<span class="o">)</span>
+	at org.springframework.boot.SpringApplication.refreshContext<span class="o">(</span>SpringApplication.java:395<span class="o">)</span>
+	at org.springframework.boot.SpringApplication.run<span class="o">(</span>SpringApplication.java:327<span class="o">)</span>
+	at org.springframework.boot.SpringApplication.run<span class="o">(</span>SpringApplication.java:1255<span class="o">)</span>
+	at org.springframework.boot.SpringApplication.run<span class="o">(</span>SpringApplication.java:1243<span class="o">)</span>
+	at com.marcobehler.MarcobehlerRootApplication.main<span class="o">(</span>MarcobehlerRootApplication.java:26<span class="o">)</span>
+Caused by: org.apache.catalina.LifecycleException: Protocol handler start failed
+	at org.apache.catalina.connector.Connector.startInternal<span class="o">(</span>Connector.java:1020<span class="o">)</span>
+	at org.apache.catalina.util.LifecycleBase.start<span class="o">(</span>LifecycleBase.java:150<span class="o">)</span>
+	... 13 common frames omitted
+	...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Developers can of course make the mental translation needed to go from "Failed to start connector" &#8594; "Another Spring Boot instance is running", but a better way would be what Spring Boot offers in newer versions:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">2018-09-11  17:44:49.179 ERROR 24745 <span class="nt">---</span> <span class="o">[</span>           main] o.s.b.d.LoggingFailureAnalysisReporter   :
+
+<span class="k">***************************</span>
+APPLICATION FAILED TO START
+<span class="k">***************************</span>
+
+Description:
+
+Embedded servlet container failed to start. Port 8080 was already <span class="k">in </span>use.
+
+Action:
+
+Identify and stop the process that<span class="s1">'s listening on port 8080 or configure this application to listen on another port.</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It could be even more improved by adding that it could be a random process or just another (IDE) instance of your application that needs to be shutdown manually.</p>
+</div>
+<div class="paragraph">
+<p>The main takeaway here is however, that it makes sense to not only log out an error message wherever you can, but also <strong>hint at possible fixes/calls for action</strong>, if you can. That will save time later on, when analysing  bugs and the corresponding log files.</p>
+</div>
+<div class="paragraph">
+<p>(If you want to see more examples of proactive help, you can also have a look at the <a href="https://wicket.apache.org/">Apache Wicket</a> framework, which comes with a 'suggested fix' for a fair amount of errors. Have a look at its source code for more details.)</p>
+</div>
+<div class="sect3">
+<h4 id="_migrating_legacy_applications">Migrating Legacy Applications</h4>
+<div class="paragraph">
+<p>To get from a normal situation to the setup discussed in this guide, i.e. unified logging practices, log libraries etc.) takes some time. Especially if you are talking multiple, existing legacy applications that you all
+want to migrate to a somewhat homogeneous logging strategy. Even disregarding all the issues of management buy-in etc, you&#8217;ll need to do
+the migration slowly for all the apps over several releases.</p>
+</div>
+<div class="paragraph">
+<p>One approach could be to put everything into the same logfile to begin with and as code and logging configuration is revisited, it would have all its logging revised to meet the new criteria. Unfortunately, this is just a rough pointer, as a fully detailed migration guide is outside the scope of this guide.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_centralized_logging">Centralized Logging</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As soon as you have more than one instance of an application running, or even multiple instances of multiple applications (think bigger organization or microservices), the question of "how to manage those logs" gets interesting. A very simple solution could be that OPs has some sort of script, that copies
+all the log files from all your instances to some shared network folder, so that developers can access it.</p>
+</div>
+<div class="paragraph">
+<p>A more advanced solution are centralized logging servers or stacks, like <a href="https://www.graylog.org/">Graylog</a> or <a href="https://www.splunk.com/en_us/solutions/solution-areas/log-management.html">Splunk</a> or <a href="https://www.elastic.co/elk-stack">Elk</a>.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s have a look at Graylog. There are <a href="https://github.com/mp911de/logstash-gelf/">Graylog Extended Log Format - GELF</a> appenders for all major Java logging frameworks, which means you can configure e.g. Log4j2 to directly send its log events to Graylog. Graylog will consume
+the log event from as many instances and applications as needed and display them in a nice, little graphical UI - albeit the syntax for searching specific log events/date ranges takes some time to get used to.</p>
+</div>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </main>
+
+    
+
+</body>
+</html>
+
+
