@@ -213,7 +213,7 @@ label {
 /* button style */
 .btn {
     -moz-user-select: none;
-    background: #ec2025;
+    background:green;
     border: medium none;
     border-radius: 5px;
     color: #ffffff;
