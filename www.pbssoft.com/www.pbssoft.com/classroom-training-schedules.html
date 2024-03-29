@@ -1193,7 +1193,7 @@ $('#form-user').submit(function(e) {
                 me[0].reset();
                 // close the message after seconds
                 $('.alert-success').delay(500).show(10, function() {
-                    $(this).delay(8000).hide(10, function() {
+                    $(this).delay().hide(10, function() {
                         $(this).remove();
                     });
                 })

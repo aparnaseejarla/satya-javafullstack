@@ -1197,7 +1197,7 @@ $('#form-user').submit(function(e) {
                 me[0].reset();
                 // close the message after seconds
                 $('.alert-success').delay(500).show(10, function() {
-                    $(this).delay(8000).hide(10, function() {
+                    $(this).delay().hide(10, function() {
                         $(this).remove();
                     });
                 })
@@ -2269,7 +2269,7 @@ box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
       
       	  <div class="row">
           	<div class="col-md-8" align="left">Duration: 45 Days</div>
-            <div class="col-md-8" align="left">Price: <i class="fa fa-rupee"></i> 8000</div>
+            <div class="col-md-8" align="left"> <i class="fa fa-rupee"></i> </div>
             <div class="col-md-8" align="left">Rating:
          <i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star-o" aria-hidden="true"></i>        </div>
       	  </div>

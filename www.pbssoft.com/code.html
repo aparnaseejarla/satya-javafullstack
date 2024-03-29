@@ -145,12 +145,12 @@ if (!doNotTrack) {
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">sonarqube</span>:
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">sonarqube:lts</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:
-</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">9000</span>:<span style="color:#ae81ff">9000</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff"></span>:<span style="color:#ae81ff"></span>
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">environment</span>:
 </span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">SONAR\_FORCEAUTHENTICATION=false</span>
 </span></span></code></pre></div><ul>
 <li>uses the <em>lts</em> (long term support) version of the SonarQube Docker image, which is currently SonarQube version 8.9.</li>
-<li>SonarQube is configured to start on port 9000</li>
+<li>SonarQube is configured to start on port </li>
 <li>SonarQube authentication is disabled to simplify this demo. Always use authentication in a production environment.</li>
 </ul>
 <p>To run Docker Compose from Gradle, just add this plugin to your <em>build.gradle</em>:</p>
@@ -181,9 +181,9 @@ if (!doNotTrack) {
 </span></span></code></pre></div><p>That was successful, but we can double check everything is OK by seeing what Docker containers are running with <code>docker ps</code>:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>$ docker ps
 </span></span><span style="display:flex;"><span>CONTAINER ID   IMAGE           COMMAND          CREATED              STATUS              PORTS                                       NAMES
-</span></span><span style="display:flex;"><span>35459fcff334   sonarqube:lts   &#34;./bin/run.sh&#34;   About a minute ago   Up About a minute   0.0.0.0:9000-&gt;9000/tcp, :::9000-&gt;9000/tcp   39b4a0caef82cbb00dd981c87ae00
+</span></span><span style="display:flex;"><span>35459fcff334   sonarqube:lts   &#34;./bin/run.sh&#34;   About a minute ago   Up About a minute   0.0.0.0:-&gt;/tcp, :::-&gt;/tcp   39b4a0caef82cbb00dd981c87ae00
 </span></span><span style="display:flex;"><span>c20\_sonarqube-jacoco-code-coverage\_\_sonarqube\_1
-</span></span></code></pre></div><p>This shows that SonarQube is running on <a href="http://localhost:9000/">localhost:9000</a>. It might take a minute for SonarQube to start up, but eventually within a browser you&rsquo;ll be able to reach the main SonarQube dashboard.</p>
+</span></span></code></pre></div><p>This shows that SonarQube is running on <a href="http://localhost:/">localhost:</a>. It might take a minute for SonarQube to start up, but eventually within a browser you&rsquo;ll be able to reach the main SonarQube dashboard.</p>
 <p><img loading="lazy" src="images/sonarqube-home-page-1024x576.png" alt=""  />
 </p>
 <p>This is correctly reporting we currently have 0 projects analysed. Let&rsquo;s fix that! 👌</p>
@@ -219,7 +219,7 @@ if (!doNotTrack) {
 </span></span></code></pre></div><p>We also need to include a configuration to tell the SonarQube scanner where to find the SonarQube server:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-gradle" data-lang="gradle"><span style="display:flex;"><span>sonarqube <span style="color:#f92672">{</span>
 </span></span><span style="display:flex;"><span>    properties <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        property <span style="color:#e6db74">&#39;sonar.host.url&#39;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#39;http://localhost:9000&#39;</span>
+</span></span><span style="display:flex;"><span>        property <span style="color:#e6db74">&#39;sonar.host.url&#39;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#39;http://localhost:&#39;</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
 </span></span></code></pre></div><p>Lastly, to ensure the Jacoco test report is always created when we run the <em>sonarqube</em> task let&rsquo;s setup the following <code>dependsOn</code> relationship:</p>
